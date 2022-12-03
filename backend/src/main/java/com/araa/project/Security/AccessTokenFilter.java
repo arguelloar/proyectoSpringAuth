@@ -73,11 +73,15 @@ public class AccessTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean tokenFromDB(String token){
-       Optional<String> id = Optional.of(jwtHelper.getUserIdFromRefreshToken(token));
-       if(id.isPresent()){
-          return refreshTokenRepository.findById(Long.parseLong(id.get())).get().getRefreshToken().equals(token);
-       }
+    private boolean tokenFromDB(String token) {
+        Optional<String> id = Optional.of(jwtHelper.getUserIdFromRefreshToken(token));
+        if (id.isPresent()) {
+            return refreshTokenRepository
+                    .findById(Long.parseLong(id.get()))
+                    .get()
+                    .getRefreshToken()
+                    .equals(token);
+        }
         return false;
     }
 }
