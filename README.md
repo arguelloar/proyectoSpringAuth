@@ -2,7 +2,7 @@
 
 ## Spring Project with Cookie Authorization and JWT Access, Refresh Tokens  ##
 
-### Will implement products with Blob images and product data. ###
+### About to an implement a REST API for products with data and Blob images. ###
 
 ### What i use on this project ###
 
