@@ -6,8 +6,8 @@
 
 ### What i use on this project ###
 
--`Spring Framework`
--`Spring Security`
--`Spring JPA`
--`MYSQL`
--`Spring WEB`
+- `Spring Framework`
+- `Spring Security`
+- `Spring JPA`
+- `MYSQL`
+- `Spring WEB`
