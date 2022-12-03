@@ -1,4 +1,2 @@
-# ignore ALL .log files
 *.log
-
 *.properties
