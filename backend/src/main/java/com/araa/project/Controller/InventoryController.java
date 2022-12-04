@@ -41,6 +41,7 @@ public class InventoryController {
 
     //Implementar si ya existe agregar mas stock
 
+
     @PostMapping("/admin/add")
     public @ResponseBody ResponseEntity<String> productAdd(@Validated @ModelAttribute ProductDTO productDTO){
         productService.save(productDTO);
@@ -49,14 +50,14 @@ public class InventoryController {
 
     //Si ya existe updatear info o stock
 
-    @PostMapping("/admin/update")
+    @PutMapping("/admin/update")
     public @ResponseBody ResponseEntity<String> productUpdate(@Validated @ModelAttribute ProductDTO productDTO){
         productService.save(productDTO);
         return ResponseEntity.ok("Product added");
     }
 
     //Si existe borrar
-    @PostMapping("/admin/delete")
+    @DeleteMapping("/admin/delete")
     public @ResponseBody ResponseEntity<String> productDelete(@Validated @ModelAttribute ProductDTO productDTO){
         productService.save(productDTO);
         return ResponseEntity.ok("Product added");

@@ -40,7 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AccessTokenFilter accessTokenFilter(){
+    public AccessTokenFilter accessTokenFilter() {
         return new AccessTokenFilter();
     }
 
@@ -49,11 +49,11 @@ public class SecurityConfig {
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/inventory/get/**").hasAnyRole("USER")
+        http.authorizeRequests().antMatchers("/api/inventory/get/**").hasRole("USER")
                 .and().authorizeRequests().antMatchers("/api/inventory/admin/**").hasRole("ADMIN")
                 .and().authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();
-        http.addFilterBefore(accessTokenFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

@@ -9,11 +9,10 @@ import javax.persistence.*;
 @Data
 public class RefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "owner_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private User owner;
 
     private String refreshToken;

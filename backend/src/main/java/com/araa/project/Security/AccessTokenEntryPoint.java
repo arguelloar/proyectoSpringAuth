@@ -1,5 +1,7 @@
 package com.araa.project.Security;
 
+import com.araa.project.Helper.CookieHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -11,8 +13,12 @@ import java.io.IOException;
 
 @Component
 public class AccessTokenEntryPoint implements AuthenticationEntryPoint {
+
+    @Autowired
+    private CookieHelper cookieHelper;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        response.addCookie(CookieHelper.deleteCookie());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
     }
 }
