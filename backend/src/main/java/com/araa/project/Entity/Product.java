@@ -5,9 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collection;
 
 @Data
-@Table(name = "product_list")
 @Entity
 public class Product{
     @Id
@@ -20,5 +20,14 @@ public class Product{
 
     private BigDecimal price;
 
-    private String photo;
+    private String description;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "products_photo",
+            joinColumns = @JoinColumn(
+                    name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "photo_id", referencedColumnName = "id"))
+    private Collection<Photo> photos;
 }

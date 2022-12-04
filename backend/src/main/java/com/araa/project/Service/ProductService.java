@@ -1,12 +1,15 @@
 package com.araa.project.Service;
 
 
+import com.araa.project.Entity.Photo;
 import com.araa.project.Entity.Product;
 import com.araa.project.DTO.ProductDTO;
 import com.araa.project.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,29 +17,23 @@ import java.util.Optional;
 public class ProductService{
 
     @Autowired
-    private ProductRepository repository;
+    private ProductRepository productRepository;
 
     public List<Product> findAll(){
-       return repository.findAll();
+       return productRepository.findAll();
     }
 
 
     public Optional<Product> findById(Long aLong){
-        return repository.findById(aLong);
+        return productRepository.findById(aLong);
     }
 
     public Optional<Product> findByName(String name){
         return findByName(name);
     }
 
-    public void save(ProductDTO productDTO){
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setPhoto(productDTO.getPhoto());
-        repository.save(product);
+    public void save(Product product) {
+        productRepository.save(product);
     }
-
 
 }
