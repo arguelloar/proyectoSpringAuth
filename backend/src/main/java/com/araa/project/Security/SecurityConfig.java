@@ -4,6 +4,7 @@ package com.araa.project.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -49,7 +50,7 @@ public class SecurityConfig {
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/inventory/get/**").hasRole("USER")
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/inventory/all","/api/inventory/{id}").hasRole("USER")
                 .and().authorizeRequests().antMatchers("/api/inventory/admin/**").hasRole("ADMIN")
                 .and().authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();

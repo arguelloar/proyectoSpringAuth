@@ -69,7 +69,7 @@ public class JwtHelper {
         try {
             return Optional.of(accessTokenVerifier.verify(token));
         } catch (JWTVerificationException e) {
-            log.error("invalid access token", e);
+            log.error("invalid access token");
         }
         return Optional.empty();
     }
@@ -78,7 +78,7 @@ public class JwtHelper {
         try {
             return Optional.of(refreshTokenVerifier.verify(token));
         } catch (JWTVerificationException e) {
-            log.error("invalid refresh token", e);
+            log.error("invalid refresh token");
         }
         return Optional.empty();
     }

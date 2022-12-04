@@ -61,6 +61,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);
+                log.info("Access token from user "+user.getEmail()+" expired, creating new one");
                 response.addCookie(cookieBuilder(user, jwtHelper.generateAccessToken(user), refreshToken));
             }
         });
