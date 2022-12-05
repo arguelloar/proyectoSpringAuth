@@ -6,7 +6,7 @@
 
 ### What i use on this project ###
 
-- `Spring Framework`
+- `Java`
 - `Spring Security`
 - `Spring JPA`
 - `MYSQL`
