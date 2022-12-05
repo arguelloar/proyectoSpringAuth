@@ -25,6 +25,8 @@ public class InventoryController {
     @Autowired
     private ProductService productService;
 
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<?> productGet(@PathVariable Long id){
         Optional<Product> productById = productService.findById(id);
@@ -34,12 +36,15 @@ public class InventoryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public @ResponseBody ResponseEntity<?> productList(){
         return new ResponseEntity<>(productService.findAll(),HttpStatus.OK);
     }
 
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/admin/add")
     public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart MultipartFile photo) throws IOException {
 
@@ -60,12 +65,15 @@ public class InventoryController {
 
     //Si ya existe updatear info o stock
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/admin/update")
     public @ResponseBody ResponseEntity<String> productUpdate(@Validated @ModelAttribute ProductDTO productDTO){
         return ResponseEntity.ok("Product added");
     }
 
+
     //Si existe borrar
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/delete")
     public @ResponseBody ResponseEntity<String> productDelete(@Validated @ModelAttribute ProductDTO productDTO){
         return ResponseEntity.ok("Product added");

@@ -43,9 +43,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        Optional<Cookie> cookie = cookieGet(request);
-
-        cookie.ifPresent(cookie1 -> {
+        cookieGet(request).ifPresent(cookie1 -> {
             String accessToken = StringUtils.substringBetween(cookie1.getValue(), "%", "&%");
             String refreshToken = StringUtils.substringAfter(cookie1.getValue(), "&%");
 
@@ -61,7 +59,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);
-                log.info("Access token from user "+user.getEmail()+" expired, creating new one");
                 response.addCookie(cookieBuilder(user, jwtHelper.generateAccessToken(user), refreshToken));
             }
         });

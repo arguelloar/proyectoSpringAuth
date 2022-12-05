@@ -57,25 +57,29 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody UserDTO userDTO,
                                    HttpServletRequest request,
-                                   HttpServletResponse response) {
+                                   HttpServletResponse response,
+                                   @AuthenticationPrincipal User user) {
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(user != null){
+            return ResponseEntity.ok("Already logged in");
+        }else {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+            Authentication authentication = authenticationManager.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = (User) authentication.getPrincipal();
-        refreshTokenRepository.deleteById(user.getId());
-        RefreshToken refreshToken = new RefreshToken();
-        String rToken = jwtHelper.generateRefreshToken(user, refreshToken);
-        refreshToken.setOwner(user);
-        refreshToken.setRefreshToken(rToken);
-        refreshTokenRepository.save(refreshToken);
+            User userData = (User) authentication.getPrincipal();
+            refreshTokenRepository.deleteById(userData.getId());
+            RefreshToken refreshToken = new RefreshToken();
+            String rToken = jwtHelper.generateRefreshToken(userData, refreshToken);
+            refreshToken.setOwner(userData);
+            refreshToken.setRefreshToken(rToken);
+            refreshTokenRepository.save(refreshToken);
 
-        String accessToken = jwtHelper.generateAccessToken(user);
+            String accessToken = jwtHelper.generateAccessToken(userData);
 
-        response.addCookie(cookieBuilder(user, accessToken, rToken));
-        return ResponseEntity.ok("Logged in");
-
+            response.addCookie(cookieBuilder(userData, accessToken, rToken));
+            return ResponseEntity.ok("Logged in");
+        }
     }
 
     @PostMapping("/logout")
