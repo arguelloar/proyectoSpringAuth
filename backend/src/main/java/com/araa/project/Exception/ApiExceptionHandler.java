@@ -1,5 +1,7 @@
 package com.araa.project.Exception;
 
+import com.araa.project.Helper.CookieHelper;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -24,7 +28,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleAuthRequest(HttpServletRequest request,AuthenticationException e){
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         ApiException apiException = new ApiException(
-                e.getMessage(),
+                "You could not get authenticated",
                 httpStatus,
                 ZonedDateTime.now(ZoneId.of(TIME_ZONE)),
                 request.getRequestURI()
@@ -33,7 +37,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleError(HttpServletRequest request, BadCredentialsException e) {
+    public ResponseEntity<Object> handleError(HttpServletRequest request, BadCredentialsException e, HttpServletResponse response) throws IOException {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         ApiException apiException = new ApiException(
                 e.getMessage(),
@@ -45,8 +49,20 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDenied(HttpServletRequest request, AccessDeniedException e) {
+    public ResponseEntity<Object> handleAccessDenied(HttpServletRequest request, AccessDeniedException e, HttpServletResponse response) throws IOException {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        ApiException apiException = new ApiException(
+                "You have no authorization for this resource",
+                httpStatus,
+                ZonedDateTime.now(ZoneId.of(TIME_ZONE)),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(EmailAlreadyRegisteredException.class)
+    public ResponseEntity<Object> emailRegistered(HttpServletRequest request, EmailAlreadyRegisteredException e) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 httpStatus,
@@ -56,16 +72,15 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Object> emailRegistered(HttpServletRequest request, SQLIntegrityConstraintViolationException e) {
+    @ExceptionHandler(IncorrectFormatException.class)
+    public ResponseEntity<Object> incorrectFormat(HttpServletRequest request, IncorrectFormatException e) {
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;
         ApiException apiException = new ApiException(
-                "Email already registered",
+                e.getMessage(),
                 httpStatus,
                 ZonedDateTime.now(ZoneId.of(TIME_ZONE)),
                 request.getRequestURI()
         );
         return new ResponseEntity<>(apiException, httpStatus);
     }
-
 }

@@ -5,14 +5,17 @@ import com.araa.project.DTO.UserDTO;
 import com.araa.project.Entity.RefreshToken;
 import com.araa.project.Entity.Role;
 import com.araa.project.Entity.User;
+import com.araa.project.Exception.EmailAlreadyRegisteredException;
+import com.araa.project.Exception.IncorrectFormatException;
 import com.araa.project.Helper.CookieHelper;
 import com.araa.project.Helper.Validator;
 import com.araa.project.Repository.RefreshTokenRepository;
 import com.araa.project.Helper.JwtHelper;
 import com.araa.project.Service.UserService;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,11 +23,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 
 import static com.araa.project.Helper.CookieHelper.*;
@@ -96,15 +101,18 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO,
                                       HttpServletRequest request,
-                                      HttpServletResponse response) {
+                                      HttpServletResponse response) throws EmailAlreadyRegisteredException {
 
         User user = new User();
+
         if (Validator.emailPattern(userDTO.getEmail())
                 && Validator.pwPattern(userDTO.getPassword())) {
             user.setEmail(userDTO.getEmail());
             user.setPassword(encoder.encode(userDTO.getPassword()));
             user.setRoles(Arrays.asList(new Role("ROLE_USER")));
             userService.save(user);
+
+
 
             RefreshToken refreshToken = new RefreshToken();
             String rToken = jwtHelper.generateRefreshToken(user, refreshToken);
@@ -118,14 +126,14 @@ public class AuthController {
             response.addCookie(cookieBuilder(user, accessToken, rToken));
             return ResponseEntity.ok("User registered");
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Incorrect email or password format");
+        throw new IncorrectFormatException("Bad email/password format");
     }
 
     @Transactional
     @PostMapping("/register/super/admin")
     public ResponseEntity<?> registerAdmin(@RequestBody UserDTO userDTO,
                                            HttpServletRequest request,
-                                           HttpServletResponse response) {
+                                           HttpServletResponse response) throws EmailAlreadyRegisteredException {
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(encoder.encode(userDTO.getPassword()));
