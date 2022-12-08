@@ -54,10 +54,10 @@ public class InventoryController {
         uploadPhoto.setBytes(photo.getBytes());
 
         Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setDescription(productDTO.getDescription());
+        product.setName(productDTO.name());
+        product.setPrice(productDTO.price());
+        product.setStock(productDTO.stock());
+        product.setDescription(productDTO.description());
         product.setPhotos(Arrays.asList(uploadPhoto));
         productService.save(product);
         return ResponseEntity.ok("Product added");

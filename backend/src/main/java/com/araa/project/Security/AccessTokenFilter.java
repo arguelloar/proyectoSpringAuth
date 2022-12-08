@@ -15,12 +15,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static com.araa.project.Helper.CookieHelper.cookieBuilder;
 import static com.araa.project.Helper.CookieHelper.cookieGet;
@@ -47,13 +44,13 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             String accessToken = StringUtils.substringBetween(cookie1.getValue(), "%", "&%");
             String refreshToken = StringUtils.substringAfter(cookie1.getValue(), "&%");
 
-            if (jwtHelper.validateAccessToken(accessToken) && (jwtHelper.validateRefreshToken(refreshToken) && tokenFromDB(refreshToken))) {
+            if (jwtHelper.validateAccessToken(accessToken)) {
                 String id = jwtHelper.getUserIdFromAccessToken(accessToken);
                 User user = userService.findById(Long.parseLong(id)).get();
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);
-            } else if (!jwtHelper.validateAccessToken(accessToken) && (jwtHelper.validateRefreshToken(refreshToken) && tokenFromDB(refreshToken))) {
+            }else if (jwtHelper.validateRefreshToken(refreshToken) && jwtHelper.tokenFromDB(refreshToken)){
                 String id = jwtHelper.getUserIdFromRefreshToken(refreshToken);
                 User user = userService.findById(Long.parseLong(id)).get();
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -62,19 +59,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 response.addCookie(cookieBuilder(user, jwtHelper.generateAccessToken(user), refreshToken));
             }
         });
-
         filterChain.doFilter(request, response);
-    }
-
-    private boolean tokenFromDB(String token) {
-        Optional<String> id = Optional.of(jwtHelper.getUserIdFromRefreshToken(token));
-        if (id.isPresent()) {
-            return refreshTokenRepository
-                    .findById(Long.parseLong(id.get()))
-                    .get()
-                    .getRefreshToken()
-                    .equals(token);
-        }
-        return false;
     }
 }

@@ -8,14 +8,12 @@ import com.araa.project.Entity.User;
 import com.araa.project.Exception.EmailAlreadyRegisteredException;
 import com.araa.project.Exception.IncorrectFormatException;
 import com.araa.project.Helper.CookieHelper;
+import com.araa.project.Helper.JwtHelper;
 import com.araa.project.Helper.Validator;
 import com.araa.project.Repository.RefreshTokenRepository;
-import com.araa.project.Helper.JwtHelper;
 import com.araa.project.Service.UserService;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,16 +21,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 
-import static com.araa.project.Helper.CookieHelper.*;
+import static com.araa.project.Helper.CookieHelper.cookieBuilder;
+import static com.araa.project.Helper.CookieHelper.deleteCookie;
 
 @Log4j2
 @RestController
@@ -68,7 +68,7 @@ public class AuthController {
         if(user != null){
             return ResponseEntity.ok("Already logged in");
         }else {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.email(), userDTO.password());
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -105,10 +105,10 @@ public class AuthController {
 
         User user = new User();
 
-        if (Validator.emailPattern(userDTO.getEmail())
-                && Validator.pwPattern(userDTO.getPassword())) {
-            user.setEmail(userDTO.getEmail());
-            user.setPassword(encoder.encode(userDTO.getPassword()));
+        if (Validator.emailPattern(userDTO.email())
+                && Validator.pwPattern(userDTO.password())) {
+            user.setEmail(userDTO.email());
+            user.setPassword(encoder.encode(userDTO.password()));
             user.setRoles(Arrays.asList(new Role("ROLE_USER")));
             userService.save(user);
 
@@ -135,8 +135,8 @@ public class AuthController {
                                            HttpServletRequest request,
                                            HttpServletResponse response) throws EmailAlreadyRegisteredException {
         User user = new User();
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(encoder.encode(userDTO.getPassword()));
+        user.setEmail(userDTO.email());
+        user.setPassword(encoder.encode(userDTO.password()));
         user.setRoles(Arrays.asList(new Role("ROLE_ADMIN"), new Role("ROLE_USER")));
         userService.save(user);
 
