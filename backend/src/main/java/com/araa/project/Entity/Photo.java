@@ -1,17 +1,18 @@
 package com.araa.project.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Photo {
-
-    public Photo() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
