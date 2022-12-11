@@ -1,13 +1,17 @@
 package com.araa.project.Entity;
 
 
+import com.araa.project.Exception.ProductNotFoundException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -31,7 +35,7 @@ public class Product{
     @NonNull
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "products_photo",
             joinColumns = @JoinColumn(
@@ -39,5 +43,16 @@ public class Product{
             inverseJoinColumns = @JoinColumn(
                     name = "photo_id", referencedColumnName = "id"))
     private Collection<Photo> photos;
+
+    public void removePhoto(Long id){
+        Optional<Photo> _photo = this.photos.stream()
+                .filter(photo -> photo.getId() == id)
+                .findFirst();
+        if(_photo.isPresent()){
+            this.photos.remove(_photo.get());
+        }else {
+            throw new ProductNotFoundException("Photo with id "+id+" not found");
+        }
+    }
 
 }

@@ -29,4 +29,7 @@ public class Photo {
     @Lob
     @Column(length = 100000, unique = true)
     private byte[] bytes;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Product product;
 }

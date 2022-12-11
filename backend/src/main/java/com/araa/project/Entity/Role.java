@@ -1,6 +1,7 @@
 package com.araa.project.Entity;
 
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
 
@@ -18,5 +19,10 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
     private String name;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 }

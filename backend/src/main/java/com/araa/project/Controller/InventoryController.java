@@ -125,19 +125,8 @@ public class InventoryController {
     @DeleteMapping("/delete/{id}/photo/{photoId}")
     public @ResponseBody ResponseEntity<String> productPhotoDelete(@PathVariable Long id, @PathVariable Long photoId){
         productService.findById(id).ifPresentOrElse((p) -> {
-            Collection<Photo> photos = p.getPhotos();
-            Optional<Photo> _photo = photos.stream()
-                    .filter(photo -> photo.getId() == photoId)
-                    .findFirst();
-
-            if(_photo.isPresent()){
-                photos.remove(_photo.get());
-                p.setPhotos(photos);
+                p.removePhoto(photoId);
                 productService.save(p);
-                productService.deletePhotoById(photoId);
-            }else {
-                throw new ProductNotFoundException("Product photo with id "+photoId+" not found");
-            }
         },() -> {
             throw new ProductNotFoundException("Product with "+id+" not found");
         });
