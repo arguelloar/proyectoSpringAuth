@@ -127,6 +127,7 @@ public class InventoryController {
         productService.findById(id).ifPresentOrElse((p) -> {
                 p.removePhoto(photoId);
                 productService.save(p);
+                
         },() -> {
             throw new ProductNotFoundException("Product with "+id+" not found");
         });
