@@ -1,13 +1,23 @@
 # proyectoSpringAuth #
 
-## Spring Project with Cookie Authorization and JWT Access, Refresh Tokens  ##
+## REST API and Responsive Page  ##
 
-### About to an implement a REST API for products with data and Blob images. ###
+This is my first project where i implement a REST API utilizing Java and Spring, it contains USER Login/Registration, and Inventory endpoints for visualizing product data.
 
-### What i use on this project ###
+Spring Security for protecting resources and data manipulation.
 
+Spring JPA and MYSQL for persisting data.
+
+### Backend ###
 - `Java`
 - `Spring Security`
 - `Spring JPA`
 - `MYSQL`
-- `Spring WEB`
+
+
+//ABOUT TO IMPLEMENT FRONTEND WITH REACT//
+
+### Frontend ###
+
+- `REACT`
+
