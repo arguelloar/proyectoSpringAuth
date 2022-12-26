@@ -22,10 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +34,7 @@ import static com.araa.project.Helper.CookieHelper.deleteCookie;
 @Log4j2
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -61,7 +59,7 @@ public class AuthController {
     @Transactional
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody UserDTO userDTO,
-                                   HttpServletRequest request,
+                                   HttpServletRequest requvest,
                                    HttpServletResponse response,
                                    @AuthenticationPrincipal User user) {
 
