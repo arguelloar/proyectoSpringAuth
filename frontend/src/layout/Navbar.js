@@ -1,11 +1,13 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function Navbar() {
+
   return (
     <div>
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid justify-content-around">
-                <a className="navbar-brand" href="#">Adrian Arguello - Java Developer</a>
+                <a className="navbar-brand" href="/">Adrian Arguello - Java Developer</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button>
@@ -23,7 +25,7 @@ export default function Navbar() {
                     </li>
                   </ul>
                 </div>
-                <a href="/login" className="btn btn-outline-dark" role="button">Login</a>
+                <a href="/login" className="btn btn-outline-dark" role="button" id="btnLogout">Logout</a>
             </div>
         </nav>
     </div>

@@ -31,7 +31,11 @@ public class User implements UserDetails {
     @NonNull
     private String password;
 
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -55,8 +59,9 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return null;
     }
+
 
     public String getEmail() {
         return this.email;

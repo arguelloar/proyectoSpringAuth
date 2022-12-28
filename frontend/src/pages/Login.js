@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userLogin from "../services/userLogin";
+import { AuthContext } from "../App";
 
 export default function Login() {
-    
     let navigate = useNavigate();
 
+    const auth = useContext(AuthContext);
+    
     const [login, setLogin] = useState({
         email:"",
         password:""
@@ -17,26 +20,16 @@ export default function Login() {
         setLogin({...login,[e.target.name]: e.target.value});
     };
 
-    let statusCode;
-
-    async function userLogin(){
-        const response = await fetch("http://localhost:8080/api/auth/login", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                 body: JSON.stringify(login)
-            });
-            statusCode = response.status;
-            if(statusCode == 200){
-                navigate("/");
-            }
-            return response.json();
-    }
-
     const onSubmit = (e) => {
         e.preventDefault();
-        userLogin();
+        userLogin(login).then(res => {
+            if(res.ok){
+                auth.setAuth(true);
+                navigate("/");
+            }else{
+                auth.setAuth(false);
+            }
+        });
     }
 
   return (
@@ -44,12 +37,12 @@ export default function Login() {
         <form className="mt-5 row justify-content-around" onSubmit={(e) => onSubmit(e)}>
             <div className="col-lg-7 form-outline mb-4">
                 <input type="email" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />
-                <label className="form-label" for="form2Example1">Email address</label>
+                <label className="form-label" htmlFor="form2Example1">Email address</label>
             </div>
 
             <div className="form-outline mb-4 col-lg-7">
                 <input type="password" name="password" id="form2Example2" className="form-control" value={password} onChange={(e) => onInputChange(e)} />
-                <label className="form-label" for="form2Example2">Password</label>
+                <label className="form-label" htmlFor="form2Example2">Password</label>
             </div>
 
             <div className="row mb-4 col-lg-6">

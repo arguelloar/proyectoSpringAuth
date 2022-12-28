@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function Home() {
+  
   return (
     <div className="container-fluid">
         <div className="row py-3 justify-content-md-center">
@@ -18,7 +19,6 @@ export default function Home() {
                 </ul>
             </div>
         </div>
-
     </div>
   )
 };

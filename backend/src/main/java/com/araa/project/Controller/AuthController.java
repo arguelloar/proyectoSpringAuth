@@ -11,9 +11,11 @@ import com.araa.project.Helper.CookieHelper;
 import com.araa.project.Helper.JwtHelper;
 import com.araa.project.Helper.Validator;
 import com.araa.project.Repository.RefreshTokenRepository;
+import com.araa.project.Service.TokenVerifierService;
 import com.araa.project.Service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,21 +26,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Optional;
 
-import static com.araa.project.Helper.CookieHelper.cookieBuilder;
-import static com.araa.project.Helper.CookieHelper.deleteCookie;
+import static com.araa.project.Helper.CookieHelper.*;
 
 @Log4j2
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
 public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenVerifierService tokenVerifierService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -105,6 +110,8 @@ public class AuthController {
 
         if (Validator.emailPattern(userDTO.email())
                 && Validator.pwPattern(userDTO.password())) {
+            user.setFirstName(userDTO.firstName());
+            user.setLastName(userDTO.lastName());
             user.setEmail(userDTO.email());
             user.setPassword(encoder.encode(userDTO.password()));
             user.setRoles(Arrays.asList(new Role("ROLE_USER")));
@@ -148,6 +155,14 @@ public class AuthController {
 
         response.addCookie(cookieBuilder(user, accessToken, rToken));
         return ResponseEntity.ok("Admin registered");
+    }
+
+    @PostMapping("/token")
+    public ResponseEntity<?> cookieAuth(HttpServletRequest request){
+        if(tokenVerifierService.isAuthenticated(cookieGet(request))){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
 }

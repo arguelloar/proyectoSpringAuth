@@ -15,7 +15,6 @@ public class CookieHelper {
     public static Cookie cookieBuilder(User user, String accessToken, String refreshToken){
         String cookie = user.getEmail()+"%"+accessToken+"&%"+refreshToken;
         Cookie setCookie = new Cookie("userLogin",cookie);
-        setCookie.setHttpOnly(true);
         setCookie.setPath("/");
         setCookie.setDomain("localhost");
         return setCookie;
@@ -23,7 +22,6 @@ public class CookieHelper {
 
     public static Cookie deleteCookie(){
         Cookie setCookie = new Cookie("userLogin",null);
-        setCookie.setHttpOnly(true);
         setCookie.setPath("/");
         setCookie.setDomain("localhost");
         setCookie.setMaxAge(0);
