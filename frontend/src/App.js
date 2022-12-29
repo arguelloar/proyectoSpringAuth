@@ -9,15 +9,15 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
-import tokenAuth from "./services/tokenAuth";
+import { isPresent } from './services/cookieAuth';
 
 const AuthContext = createContext({});  
 export {AuthContext};
 
 function App() {
 
-  const [auth,setAuth] = useState(tokenAuth); 
-  
+  const [auth,setAuth] = useState(isPresent());
+
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
     <div className="App">

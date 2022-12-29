@@ -1,11 +1,12 @@
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
 import {Outlet, Navigate} from 'react-router-dom'
-import tokenAuth from '../services/tokenAuth'
 import { AuthContext } from '../App';
+import {cookieCheck} from '../services/cookieAuth';
 
 
 const PrivateRoutes = () => {
   const auth = useContext(AuthContext);
+  cookieCheck().then(res => auth.setAuth(res))
   
   return(
     auth.auth ? <Outlet /> : <Navigate to="/login"/>

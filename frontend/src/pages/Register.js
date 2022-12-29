@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userRegister from "../services/userRegister";
+import {emailValidator, pwValidator} from "../services/inputValidators";
 
 
 export default function Register() {
@@ -22,15 +23,20 @@ export default function Register() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        userRegister(register).then(res => {
-            if(res.ok){
-                navigate("/");
-            }
-        });
+        if(emailValidator(register.email) && pwValidator(register.password)){
+            userRegister(register).then(res => {
+                if(res.ok){
+                    navigate("/");
+                }
+            });
+        }else{
+            alert("Incorrect format");
+        }
     }
 
   return (
     <div className="container-fluid text-center" onSubmit={(e) => onSubmit(e)}>
+        <h1>Register Here</h1>
         <form className="mt-5 row justify-content-around">
             <div className="form-outline mb-4 col-lg-7">
                 <input type="text" name="firstName" id="form2Example2" className="form-control" value={firstName} onChange={(e) => onInputChange(e)}/>

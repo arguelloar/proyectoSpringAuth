@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userLogin from "../services/userLogin";
 import { AuthContext } from "../App";
@@ -34,6 +34,7 @@ export default function Login() {
 
   return (
     <div className="container-fluid text-center">
+        <h1>User Login</h1>
         <form className="mt-5 row justify-content-around" onSubmit={(e) => onSubmit(e)}>
             <div className="col-lg-7 form-outline mb-4">
                 <input type="email" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />

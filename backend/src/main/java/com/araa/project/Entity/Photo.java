@@ -24,7 +24,6 @@ public class Photo {
     @NonNull
     private String name;
 
-    @JsonIgnore
     @NonNull
     @Lob
     @Column(length = 100000, unique = true)
