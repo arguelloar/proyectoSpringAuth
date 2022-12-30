@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../App";
+import { AuthContext} from "../App";
 import userLogout from "../services/userLogout";
 
 export default function Navbar() {
@@ -8,8 +8,8 @@ export default function Navbar() {
 
   const handleClick = () => {
     userLogout();
+    auth.setAuth(false);
   }
-
 
   return (
     <div>

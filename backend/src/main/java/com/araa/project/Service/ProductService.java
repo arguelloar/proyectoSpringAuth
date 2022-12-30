@@ -1,7 +1,6 @@
 package com.araa.project.Service;
 
 import com.araa.project.Entity.Product;
-import com.araa.project.Repository.PhotoRepository;
 import com.araa.project.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,6 @@ public class ProductService{
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private PhotoRepository photoRepository;
 
     public List<Product> findAll(){
        return productRepository.findAll();
@@ -39,8 +35,5 @@ public class ProductService{
         productRepository.deleteById(id);
     }
 
-    public void deletePhotoById(Long id){
-        photoRepository.deleteById(id);
-    }
 
 }

@@ -11,28 +11,33 @@ import Products from './pages/Products';
 import { createContext, useState } from 'react';
 import { isPresent } from './services/cookieAuth';
 
+
 const AuthContext = createContext({});  
-export {AuthContext};
+const UserContext = createContext({});
+export {AuthContext, UserContext};
 
 function App() {
 
   const [auth,setAuth] = useState(isPresent());
+  const [role,setRole] = useState("ROLE_USER");
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
-    <div className="App">
-      <Router>
-      <Navbar />
-      <Routes>
-        <Route element={<PrivateRoutes />}>
-          <Route exact path="/products" element={<Products />}/>
-          <Route exact path="/" element={<Home />} />
-        </Route>
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/register" element={<Register />} />
-      </Routes>
-      </Router>
-    </div>
+      <UserContext.Provider value={{role,setRole}}>
+      <div className="App">
+        <Router>
+        <Navbar />
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route exact path="/products" element={<Products />}/>
+            <Route exact path="/" element={<Home />} />
+          </Route>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+        </Routes>
+        </Router>
+      </div>
+      </UserContext.Provider>
     </AuthContext.Provider>
   );
 }

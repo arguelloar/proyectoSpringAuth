@@ -35,24 +35,10 @@ public class Product{
     @NonNull
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "products_photo",
-            joinColumns = @JoinColumn(
-                    name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "photo_id", referencedColumnName = "id"))
-    private Collection<Photo> photos;
+    @NonNull
+    @Lob
+    @Column(length = 100000, unique = true)
+    private byte[] photo;
 
-    public void removePhoto(Long id){
-        Optional<Photo> _photo = this.photos.stream()
-                .filter(photo -> photo.getId() == id)
-                .findFirst();
-        if(_photo.isPresent()){
-            this.photos.remove(_photo.get());
-        }else {
-            throw new ProductNotFoundException("Photo with id "+id+" not found");
-        }
-    }
 
 }

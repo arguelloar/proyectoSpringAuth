@@ -29,7 +29,7 @@ export default function Login() {
             }else{
                 auth.setAuth(false);
             }
-        });
+        })
     }
 
   return (
@@ -37,7 +37,7 @@ export default function Login() {
         <h1>User Login</h1>
         <form className="mt-5 row justify-content-around" onSubmit={(e) => onSubmit(e)}>
             <div className="col-lg-7 form-outline mb-4">
-                <input type="email" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />
+                <input type="text" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />
                 <label className="form-label" htmlFor="form2Example1">Email address</label>
             </div>
 

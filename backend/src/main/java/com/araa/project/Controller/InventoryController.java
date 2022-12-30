@@ -2,7 +2,6 @@ package com.araa.project.Controller;
 
 
 import com.araa.project.DTO.ProductDTO;
-import com.araa.project.Entity.Photo;
 import com.araa.project.Entity.Product;
 import com.araa.project.Exception.ProductNotFoundException;
 import com.araa.project.Service.ProductService;
@@ -45,27 +44,15 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
-    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart MultipartFile[] photo) throws IOException {
+    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart MultipartFile photo) throws IOException {
 
-        List<Photo> photoList = new ArrayList<>();
-        Arrays.stream(photo).forEach(_photo -> {
-            Photo uploadPhoto = new Photo();
-            try {
-                uploadPhoto.setContentType(_photo.getContentType());
-                uploadPhoto.setName(_photo.getOriginalFilename());
-                uploadPhoto.setBytes(_photo.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            photoList.add(uploadPhoto);
-        });
 
         Product product = new Product();
         product.setName(productDTO.name());
         product.setPrice(productDTO.price());
         product.setStock(productDTO.stock());
         product.setDescription(productDTO.description());
-        product.setPhotos(photoList);
+        product.setPhoto(photo.getBytes());
         productService.save(product);
         return ResponseEntity.ok("Product added");
     }
@@ -78,7 +65,7 @@ public class InventoryController {
         Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
         product.setName(productDTO.name());
         product.setPrice(productDTO.price());
-        product.setStock(productDTO.stock());
+        product.setStock(product.getStock()+productDTO.stock());
         product.setDescription(productDTO.description());
         productService.save(product);
         return ResponseEntity.ok("Product with "+id+" updated");
@@ -86,23 +73,9 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update/{id}/photos")
-    public @ResponseBody ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile[] photo){
+    public @ResponseBody ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile photo) throws IOException {
         Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
-        Collection<Photo> photos = product.getPhotos();
-
-        Arrays.stream(photo).forEach(_photo -> {
-            Photo uploadPhoto = new Photo();
-            try {
-                uploadPhoto.setContentType(_photo.getContentType());
-                uploadPhoto.setName(_photo.getOriginalFilename());
-                uploadPhoto.setBytes(_photo.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            photos.add(uploadPhoto);
-        });
-
-        product.setPhotos(photos);
+        product.setPhoto(photo.getBytes());
         productService.save(product);
 
         return ResponseEntity.ok("Product photos updated on id :"+id);
@@ -121,16 +94,18 @@ public class InventoryController {
         return new ResponseEntity<>("Product with id "+id+"not found",HttpStatus.NOT_FOUND);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{id}/photo/{photoId}")
-    public @ResponseBody ResponseEntity<String> productPhotoDelete(@PathVariable Long id, @PathVariable Long photoId){
-        productService.findById(id).ifPresentOrElse((p) -> {
-                p.removePhoto(photoId);
-                productService.save(p);
 
-        },() -> {
-            throw new ProductNotFoundException("Product with "+id+" not found");
-        });
-        return new ResponseEntity<>("Product with photo id "+id+"=>"+photoId+" has been deleted", HttpStatus.OK);
-    }
+    //TODO NEED TO IMPLEMENT PUT FOR UPDATING STOCK
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PutMapping("/buy")
+//    public @ResponseBody ResponseEntity<String> productAdd(@RequestParam Long id,
+//                                                           @RequestParam int stock) throws IOException {
+//
+//        Optional<Product> product = productService.findById(id);
+//        if(product.isPresent()){
+//            int newStock = (product.get().getStock())-stock;
+//            product.get().setStock(newStock);
+//        }
+//        return ResponseEntity.ok("Product added");
+//    }
 }

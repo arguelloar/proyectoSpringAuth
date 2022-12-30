@@ -22,7 +22,4 @@ public class Role {
 
     @NonNull
     private String name;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private User user;
 }

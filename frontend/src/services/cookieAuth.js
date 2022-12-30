@@ -6,8 +6,8 @@ export async function cookieCheck(){
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
-        return response.ok;
+        }).catch("Cannot access to this resource without authentication");
+        return response;
 }
 
 export function isPresent(){

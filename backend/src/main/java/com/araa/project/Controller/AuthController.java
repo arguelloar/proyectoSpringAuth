@@ -158,9 +158,9 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> cookieAuth(HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<?> cookieAuth(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal User user){
         if(tokenVerifierService.isAuthenticated(cookieGet(request))){
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return new ResponseEntity<>(user.getRoles(),HttpStatus.OK);
         }
         response.addCookie(deleteCookie());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
