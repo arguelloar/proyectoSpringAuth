@@ -11,7 +11,9 @@ const PrivateRoutes = () => {
   useEffect(() => {
     cookieCheck().then(res => {
       auth.setAuth(res.ok)
-      res.json().then(data => role.setRole(data[0].name));
+      res.json().then(data => {
+        role.setRole(data[0].name) 
+      });
     })
   })
   

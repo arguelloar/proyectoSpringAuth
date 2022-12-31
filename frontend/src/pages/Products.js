@@ -1,112 +1,127 @@
-import React,{ useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState, useNavigate } from 'react';
 import { UserContext } from '../App';
+import { getAllProducts, deleteProduct, updateProduct } from '../services/productCRUD';
 
 export default function Products() {
-  const [products,setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const role = useContext(UserContext);
-  const [counter,setCounter] = useState(1);
 
   useEffect(() => {
-    getAllProducts();
-  },[])
+    getAllProducts().then(response => response.json())
+      .then(data => setProducts(data));
+  }, [])
 
-   const getAllProducts = async () => {
-     await fetch("http://localhost:8080/api/inventory/all", {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-        .then(data => setProducts(data)
-        );
-  }
-  
+
+
   return (
     <div className="container-fluid">
+      <h1>Inventory List</h1>
+      {role.role === "ROLE_ADMIN" ? <button className="col-2 btn btn-outline-primary mt-3 ">Add new product</button> : <i></i>}
       <div className="row justify-content-around">
-        <h1>Inventory List</h1>
-        {products.map((product, index) => (
-            <div className="row p-2 bg-white border rounded my-3" style={{width:800+'px'}} key={index}>
-            <div className="col-md-3 mt-1"><img className="img-fluid img-responsive rounded product-image" style={{height:125+'px'}} src={`data:image/jpeg;base64,`+product.photo} alt={product.name}></img></div>
-            <div className="col-md-6 mt-1">
-                <h5>{product.name}</h5>
-                <div className="d-flex flex-row">
-                      <span>#{index+1}</span>
-                </div>
-                <p className="text-justify text-truncate para mb-0">{product.description}<br></br><br></br></p>
-            </div>
-            <div className="align-items-center align-content-center col-md-3 border-left mt-1">
-                <div className="d-flex flex-row justify-content-around">
-                    <h4 className="mr-1">$ {product.price}</h4>
-                </div>
-                <span>{product.stock} available</span>
-                <div className="d-flex flex-column mt-2">
-                  {role.role === "ROLE_ADMIN" ? 
-                  <div className="d-flex flex-column">
-                    <button className="btn btn-outline-info btn-sm mt-2" type="button" data-bs-toggle="modal" data-bs-target="#updateProd">Update product</button>
-                    <div className="modal fade" id="updateProd" tabIndex="-1" aria-labelledby="prodUp" aria-hidden="true">
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="prodUp">{product.name}</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div className="modal-body">
-                          <form className="row justify-content-around">
-                            <div className="col-lg-7 form-outline mb-2">
-                                <label className="form-label" htmlFor="form2Example1">Price</label>
-                                <input type="number" name="price" id="form2Example1" className="form-control" defaultValue={product.price}/>
+        <table className="table border shadow mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#ID</th>
+              <th scope="col">NAME</th>
+              <th scope="col">PRICE</th>
+              <th scope="col">STOCK</th>
+              <th scope="col">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={index}>
+                <th scope="row">
+                  {index + 1}
+                </th>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.stock}</td>
+                <td>
+                  <button className="btn btn-outline-info mx-2" data-bs-toggle="modal" data-bs-target={"#viewProduct" + product.id}>View</button>
+                  {role.role === "ROLE_ADMIN" ? <button data-bs-toggle="modal" data-bs-target={"#editProduct" + product.id} className="btn btn-outline-warning mx-2"
+                    onClick={() => {
+                      updateProduct(product)
+                    }}>Edit</button> : <i></i>}
+
+                  {role.role === "ROLE_ADMIN" ? <button className="btn btn-outline-danger mx-2" onClick={() => {
+                    deleteProduct(product.id);
+                    window.location.reload();
+                  }}>Delete</button> : <i></i>}
+                  <div className="modal fade" id={"viewProduct" + product.id} tabIndex="-1" aria-labelledby="viewProductLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1 className="modal-title text-center fs-5" id="viewProductLabel">#{index + 1}</h1>
+                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                          <div className="d-flex justify-content-center container">
+                            <div className="card p-3 bg-white"><i className="fa fa-apple"></i>
+                              <div className="about-product text-center"><img src={`data:image/jpeg;base64,` + product.photo} width={200 + 'px'}></img>
+                                <div>
+                                  <h4>{product.name}</h4>
+                                  <h6 className="mt-0 text-black-50">{product.description}</h6>
+                                </div>
+                              </div>
+                              <div className="stats mt-2">
+                                <div className="d-flex justify-content-between p-price"><span>Price</span><span>${product.price}</span></div>
+                                <div className="d-flex justify-content-between p-price"><span>Available</span><span>{product.stock}</span></div>
+                              </div>
+                              <div className="d-flex justify-content-between total font-weight-bold mt-4"><span>Total in product</span><span>${(product.price * product.stock).toFixed(2)}</span></div>
                             </div>
-                            <div className="form-outline mb-4 col-lg-7">
-                                <label className="form-label" htmlFor="form2Example2">Description</label>
-                                <input type="text" name="description" id="form2Example2" className="form-control" defaultValue={product.description}/>
-                            </div>
-                            <div className="form-outline mb-4 col-lg-7">
-                                <label className="form-label" htmlFor="form2Example3">Stock</label>
-                                <input type="number" name="stock" id="form2Example3" className="form-control" defaultValue={product.stock}/>
-                            </div>
-                        </form>
-                          </div>
-                          <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Update</button>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <button className="btn btn-outline-danger btn-sm mt-2" type="button" data-bs-toggle="modal" data-bs-target="#deleteProd">Delete product</button>
-                    <div className="modal fade" id="deleteProd" tabIndex="-1" aria-labelledby="prodDel" aria-hidden="true">
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="prodDel">Do you want to delete {product.name}</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div className="modal-footer justify-content-center">
-                          <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Yes</button>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">No</button>
-                          </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                       </div>
                     </div>
                   </div>
-                   :
-                   <div className="d-flex flex-column">
-                    <button className="btn btn-primary" type="button">
-                    Buy product
-                    </button>
-                    <div className="col-12 mt-2">
-                            <div className="input-group">
-                                <input type="number" id="qty_input" className="form-control form-control-sm text-center mx-1" defaultValue="1" min="1" max={product.stock}></input>
-                            </div>
+                  <div className="modal fade" id={"editProduct" + product.id} tabIndex="-1" aria-labelledby="editProductLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1 className="modal-title text-center fs-5" id="editProductLabel">#{index + 1}</h1>
+                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                  </div>}
-                </div>
-            </div>
-          </div>
-          )
-        )}
+                        <div className="modal-body">
+                          <form className="row justify-content-around">
+                          <div className="col-lg-7 form-outline mb-2">
+                              <label className="form-label" htmlFor="form0"></label>     
+                              <img src={`data:image/jpeg;base64,` + product.photo} id="editImage" width={200 + 'px'}></img>                         
+                              <input type="file" name="photo" id="form0" className="form-control mt-2" />
+                            </div>
+                            <div className="col-lg-7 form-outline mb-2">
+                              <label className="form-label" htmlFor="form1">Name</label>
+                              <input type="text" name="name" id="form1" className="form-control" defaultValue={product.name} />
+                            </div>
+                            <div className="col-lg-7 form-outline mb-2">
+                              <label className="form-label" htmlFor="form2">Price</label>
+                              <input type="number" name="price" id="form2" className="form-control" defaultValue={product.price} />
+                            </div>
+                            <div className="form-outline mb-4 col-lg-7">
+                              <label className="form-label" htmlFor="form3">Description</label>
+                              <input type="text" name="description" id="form3" className="form-control" defaultValue={product.description} />
+                            </div>
+                            <div className="form-outline mb-4 col-lg-7">
+                              <label className="form-label" htmlFor="form4">Stock</label>
+                              <input type="number" name="stock" id="form4" className="form-control" defaultValue={product.stock} />
+                            </div>
+                          </form>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

@@ -72,7 +72,7 @@ public class InventoryController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update/{id}/photos")
+    @PutMapping("/update/{id}/photo")
     public @ResponseBody ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile photo) throws IOException {
         Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
         product.setPhoto(photo.getBytes());
@@ -93,19 +93,4 @@ public class InventoryController {
         }
         return new ResponseEntity<>("Product with id "+id+"not found",HttpStatus.NOT_FOUND);
     }
-
-
-    //TODO NEED TO IMPLEMENT PUT FOR UPDATING STOCK
-//    @PreAuthorize("hasRole('ROLE_USER')")
-//    @PutMapping("/buy")
-//    public @ResponseBody ResponseEntity<String> productAdd(@RequestParam Long id,
-//                                                           @RequestParam int stock) throws IOException {
-//
-//        Optional<Product> product = productService.findById(id);
-//        if(product.isPresent()){
-//            int newStock = (product.get().getStock())-stock;
-//            product.get().setStock(newStock);
-//        }
-//        return ResponseEntity.ok("Product added");
-//    }
 }
