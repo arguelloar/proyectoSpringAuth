@@ -2,6 +2,7 @@ import './App.css';
 import Navbar from './layout/Navbar';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
+import ProductAdd from "./pages/ProductAdd";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
@@ -31,6 +32,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route exact path="/products" element={<Products />}/>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/product/add" element={<Home />} />
           </Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />

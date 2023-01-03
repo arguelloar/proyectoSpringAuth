@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext} from "../App";
 import userLogout from "../services/userLogout";
 
 export default function Navbar() {
 
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
   const handleClick = () => {
     userLogout();
     auth.setAuth(false);
+    navigate("/login");
   }
 
   return (
@@ -34,7 +37,7 @@ export default function Navbar() {
                   </ul>
                 </div>
                 {auth.auth ? (<a href="/login" className="btn btn-outline-dark" role="button" id="btnLogout" onClick={handleClick}>Logout</a>) : 
-                (<a href="/login" className="btn btn-outline-dark" role="button" id="btnLogout">Login</a>)}
+                (<a className="btn btn-outline-dark" role="button" id="btnLogout">Login</a>)}
             </div>
         </nav>
     </div>

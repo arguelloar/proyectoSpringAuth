@@ -19,14 +19,24 @@ const getAllProducts = async () => {
   }
 
   const updateProduct = async (product, id) => {
-    await fetch(`http://localhost:8080/api/inventory/update/${id}`, {
+    return await fetch(`http://localhost:8080/api/inventory/update/${id}`, {
       credentials: 'include',
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
-        body: JSON.stringify(product)
-      }
-    }).then(response => response.json());
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    })
   }
 
-  export {getAllProducts,deleteProduct,updateProduct};
+  const updatePhoto = async (photo, id) => {
+    let formData = new FormData();
+    formData.append("photo",photo);
+    return await fetch(`http://localhost:8080/api/inventory/update/${id}/photo`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: formData
+    })
+  }
+
+  export {getAllProducts,deleteProduct,updateProduct, updatePhoto};

@@ -1,17 +1,45 @@
-import React, { useContext, useEffect, useState, useNavigate } from 'react';
+import React, { useContext, useEffect, useState, useRef} from 'react';
 import { UserContext } from '../App';
-import { getAllProducts, deleteProduct, updateProduct } from '../services/productCRUD';
+import { useNavigate } from "react-router-dom";
+import { getAllProducts, deleteProduct, updateProduct, updatePhoto } from '../services/productCRUD';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const role = useContext(UserContext);
+  const [edit,setEdit] = useState({});
+  const [photo,setPhoto] = useState('');
+  const [img,setImg] = useState();
+
+
+  
+  
 
   useEffect(() => {
     getAllProducts().then(response => response.json())
       .then(data => setProducts(data));
-  }, [])
+  }, []);
+
+  const handleChange = (e) => {
+    setEdit({...edit,[e.target.name]: e.target.value});
+  }
 
 
+  const onClick = (e,id) => {
+    e.preventDefault();
+    updatePhoto(photo,id);
+    updateProduct(edit,id).then(response => {
+      if(response.ok){
+        window.location.reload();
+      }else{
+        alert("Bad request");
+      }
+    })  
+  }
+
+  const onPhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
+    setImg(URL.createObjectURL(e.target.files[0]));
+  }
 
   return (
     <div className="container-fluid">
@@ -39,10 +67,12 @@ export default function Products() {
                 <td>{product.stock}</td>
                 <td>
                   <button className="btn btn-outline-info mx-2" data-bs-toggle="modal" data-bs-target={"#viewProduct" + product.id}>View</button>
-                  {role.role === "ROLE_ADMIN" ? <button data-bs-toggle="modal" data-bs-target={"#editProduct" + product.id} className="btn btn-outline-warning mx-2"
-                    onClick={() => {
-                      updateProduct(product)
-                    }}>Edit</button> : <i></i>}
+                  {role.role === "ROLE_ADMIN" ? <button data-bs-toggle="modal" data-bs-target={"#editProduct"+product.id} className="btn btn-outline-warning mx-2" onClick={(e) => {
+                    e.preventDefault();
+                    setEdit(product);
+                    setImg(`data:image/jpeg;base64,`+product.photo);
+                  }}
+                    >Edit</button> : <i></i>}
 
                   {role.role === "ROLE_ADMIN" ? <button className="btn btn-outline-danger mx-2" onClick={() => {
                     deleteProduct(product.id);
@@ -78,7 +108,7 @@ export default function Products() {
                       </div>
                     </div>
                   </div>
-                  <div className="modal fade" id={"editProduct" + product.id} tabIndex="-1" aria-labelledby="editProductLabel" aria-hidden="true">
+                  <div className="modal fade" id={"editProduct"+product.id} tabIndex="-1" aria-labelledby="editProductLabel" aria-hidden="true">
                     <div className="modal-dialog">
                       <div className="modal-content">
                         <div className="modal-header">
@@ -86,33 +116,33 @@ export default function Products() {
                           <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                          <form className="row justify-content-around">
+                          <form className="row justify-content-around" key={product.id}>
                           <div className="col-lg-7 form-outline mb-2">
                               <label className="form-label" htmlFor="form0"></label>     
-                              <img src={`data:image/jpeg;base64,` + product.photo} id="editImage" width={200 + 'px'}></img>                         
-                              <input type="file" name="photo" id="form0" className="form-control mt-2" />
+                              <img src={img} id="editImage" width={200 + 'px'}/>                     
+                              <input type="file" name="file" id="form0" className="form-control mt-2" accept="image/*" onChange={(e) => onPhotoChange(e,product.id)}/>
                             </div>
                             <div className="col-lg-7 form-outline mb-2">
                               <label className="form-label" htmlFor="form1">Name</label>
-                              <input type="text" name="name" id="form1" className="form-control" defaultValue={product.name} />
+                              <input type="text" name="name" id="form1" className="form-control" defaultValue={product.name} onChange={(e) => handleChange(e)} />
                             </div>
                             <div className="col-lg-7 form-outline mb-2">
                               <label className="form-label" htmlFor="form2">Price</label>
-                              <input type="number" name="price" id="form2" className="form-control" defaultValue={product.price} />
+                              <input type="number" step="0.01" name="price" id="form2" className="form-control" defaultValue={product.price} onChange={(e) => handleChange(e)} />
                             </div>
                             <div className="form-outline mb-4 col-lg-7">
                               <label className="form-label" htmlFor="form3">Description</label>
-                              <input type="text" name="description" id="form3" className="form-control" defaultValue={product.description} />
+                              <input type="text" name="description" id="form3" className="form-control" defaultValue={product.description} onChange={(e) => handleChange(e)}/>
                             </div>
                             <div className="form-outline mb-4 col-lg-7">
                               <label className="form-label" htmlFor="form4">Stock</label>
-                              <input type="number" name="stock" id="form4" className="form-control" defaultValue={product.stock} />
+                              <input type="number" step="0.01" name="stock" id="form4" className="form-control" defaultValue={product.stock} onChange={(e) => handleChange(e)}/>
                             </div>
-                          </form>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                            <div className="modal-footer">
+                          <button type="submit" className="btn btn-primary btn-block" data-bs-dismiss="modal" onClick={(e) => onClick(e,product.id)}>Update</button>
                           <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                          </form>
                         </div>
                       </div>
                     </div>

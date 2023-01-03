@@ -7,8 +7,10 @@ import com.araa.project.Exception.ProductNotFoundException;
 import com.araa.project.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,24 +63,27 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update/{id}")
-    public @ResponseBody ResponseEntity<String> productUpdate(@PathVariable Long id, @RequestPart @ModelAttribute ProductDTO productDTO){
-        Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
-        product.setName(productDTO.name());
-        product.setPrice(productDTO.price());
-        product.setStock(product.getStock()+productDTO.stock());
-        product.setDescription(productDTO.description());
-        productService.save(product);
-        return ResponseEntity.ok("Product with "+id+" updated");
+    public @ResponseBody ResponseEntity<String> productUpdate(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+        if(productDTO.name() != null){
+            Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
+            product.setName(productDTO.name());
+            product.setPrice(productDTO.price());
+            product.setStock(productDTO.stock());
+            product.setDescription(productDTO.description());
+            productService.save(product);
+            return ResponseEntity.ok("Product with "+id+" updated");
+        }
+        return new ResponseEntity<>("Bad request",HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update/{id}/photo")
-    public @ResponseBody ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile photo) throws IOException {
+    @PutMapping(value = "/update/{id}/photo", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile photo) throws IOException {
         Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
         product.setPhoto(photo.getBytes());
         productService.save(product);
 
-        return ResponseEntity.ok("Product photos updated on id :"+id);
+        return ResponseEntity.ok("Product with id : "+id+" photo updated");
     }
 
 
