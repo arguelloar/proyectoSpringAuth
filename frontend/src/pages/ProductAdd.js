@@ -24,7 +24,7 @@ export default function ProductAdd() {
 
 
   return (
-    <div className="mx-2 my-2">
+    <div className="mx-2 my-2 border">
       <form className="row justify-content-around" onSubmit={(e) => onSubmit(e)}>
         <div className="col-lg-7 form-outline mb-2">
           <label className="form-label" htmlFor="form0"></label>
