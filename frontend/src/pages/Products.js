@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef} from 'react';
 import { UserContext } from '../App';
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct, updateProduct, updatePhoto } from '../services/productCRUD';
+import ProductAdd from './ProductAdd';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -9,6 +10,7 @@ export default function Products() {
   const [edit,setEdit] = useState({});
   const [photo,setPhoto] = useState('');
   const [img,setImg] = useState();
+  const [open, setOpen] = useState(false);
 
 
   
@@ -27,13 +29,7 @@ export default function Products() {
   const onClick = (e,id) => {
     e.preventDefault();
     updatePhoto(photo,id);
-    updateProduct(edit,id).then(response => {
-      if(response.ok){
-        window.location.reload();
-      }else{
-        alert("Bad request");
-      }
-    })  
+    updateProduct(edit,id).then(response => response.ok ? window.location.reload() : alert("Bad request"))  
   }
 
   const onPhotoChange = (e) => {
@@ -44,7 +40,16 @@ export default function Products() {
   return (
     <div className="container-fluid">
       <h1>Inventory List</h1>
-      {role.role === "ROLE_ADMIN" ? <button className="col-2 btn btn-outline-primary mt-3 ">Add new product</button> : <i></i>}
+      {role.role === "ROLE_ADMIN" ? <button className="col-2 btn btn-outline-primary mt-3"
+        onClick={() => setOpen(!open)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open}>
+        Add new product
+      </button> : <i></i>}
+      
+      {open && <ProductAdd />}
+      
+      
       <div className="row justify-content-around">
         <table className="table border shadow mt-3">
           <thead>
