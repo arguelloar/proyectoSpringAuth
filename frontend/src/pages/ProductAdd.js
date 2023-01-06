@@ -52,8 +52,8 @@ export default function ProductAdd() {
           <input type="number" step="0.01" name="stock" id="form4" className="form-control" onChange={(e) => onInputChange(e)} />
         </div>
         <div className="form-outline mb-4 col-lg-7">
-        <button type="submit" className="btn btn-primary btn-block mx-2" data-bs-dismiss="modal">Add new product</button>
-        <button type="button" className="btn btn-secondary mx-2" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" className="btn btn-primary btn-block mx-2">Add new product</button>
+        <button type="button" className="btn btn-secondary mx-2">Cancel</button>
         </div>
       </form>
     </div>
