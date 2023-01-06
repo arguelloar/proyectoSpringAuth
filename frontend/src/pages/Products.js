@@ -75,7 +75,7 @@ export default function Products() {
           Add new product
         </button> : <i></i>}
         
-        {open && <ProductAdd />}
+        {open && <ProductAdd setOpen={setOpen}/>}
         
         
         <div className="row justify-content-around">

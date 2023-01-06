@@ -28,6 +28,7 @@ export default function Login() {
                 navigate("/");
             }else{
                 auth.setAuth(false);
+                alert("Incorrect email/password");
             }
         })
     }

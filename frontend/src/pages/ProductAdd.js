@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {addProduct} from "../services/productCRUD";
 
-export default function ProductAdd() {
+export default function ProductAdd({setOpen}) {
 
   const [product, setProduct] = useState({});
   const [photo, setPhoto] = useState('');
@@ -53,7 +53,7 @@ export default function ProductAdd() {
         </div>
         <div className="form-outline mb-4 col-lg-7">
         <button type="submit" className="btn btn-primary btn-block mx-2">Add new product</button>
-        <button type="button" className="btn btn-secondary mx-2">Cancel</button>
+        <button type="button" className="btn btn-secondary mx-2" onClick={() => setOpen(false)}>Cancel</button>
         </div>
       </form>
     </div>
