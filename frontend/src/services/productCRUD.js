@@ -46,7 +46,6 @@ const getAllProducts = async () => {
     formData.append("description",product.description);
     formData.append("price",product.price);
     formData.append("photo",photo);
-    console.log(formData);
     return await fetch(`http://localhost:8080/api/inventory/add`, {
       credentials: 'include',
       method: 'POST',

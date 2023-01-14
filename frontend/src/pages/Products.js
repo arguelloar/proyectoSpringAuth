@@ -57,7 +57,11 @@ export default function Products() {
   const onClick = (e,id) => {
     e.preventDefault();
     updatePhoto(photo,id);
-    updateProduct(edit,id).then(response => response.ok ? window.location.reload() : alert("Bad request"))  
+    updateProduct(edit,id).then(response => {
+      if(response.ok){
+        window.location.reload();
+      }
+    })  
   }
 
   const onPhotoChange = (e) => {
@@ -99,7 +103,7 @@ export default function Products() {
                   <td>{product.price}</td>
                   <td>{product.stock}</td>
                   <td>
-                    <button className="btn btn-outline-info mx-2" data-bs-toggle="modal" data-bs-target={"#viewProduct" + product.id}>View</button>
+                    <button className="btn btn-outline-info mx-2" data-bs-toggle="modal" data-bs-target={"#viewProduct"+product.id}>View</button>
                     {role.role === "ROLE_ADMIN" ? <button data-bs-toggle="modal" data-bs-target={"#editProduct"+product.id} className="btn btn-outline-warning mx-2" onClick={(e) => {
                       e.preventDefault();
                       setEdit(product);

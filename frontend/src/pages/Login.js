@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userLogin from "../services/userLogin";
+import userLogin from "../services/userAuth";
 import { AuthContext } from "../App";
 
 export default function Login() {
     let navigate = useNavigate();
 
     const auth = useContext(AuthContext);
+    const [alertShow,setAlertShow] = useState(false);
     
     const [login, setLogin] = useState({
         email:"",
@@ -23,12 +24,12 @@ export default function Login() {
     const onSubmit = (e) => {
         e.preventDefault();
         userLogin(login).then(res => {
-            if(res.ok){
+            if(res.httpStatus == "UNAUTHORIZED"){
+                auth.setAuth(false);
+                setAlertShow(!alertShow);
+            }else{
                 auth.setAuth(true);
                 navigate("/");
-            }else{
-                auth.setAuth(false);
-                alert("Incorrect email/password");
             }
         })
     }
@@ -37,6 +38,7 @@ export default function Login() {
     <div className="container-fluid text-center">
         <h1>User Login</h1>
         <form className="mt-5 row justify-content-around" onSubmit={(e) => onSubmit(e)}>
+        {alertShow && <div className="col-lg-7 alert alert-danger" role="alert">Incorrect email/password.</div>}
             <div className="col-lg-7 form-outline mb-4">
                 <input type="text" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />
                 <label className="form-label" htmlFor="form2Example1">Email address</label>

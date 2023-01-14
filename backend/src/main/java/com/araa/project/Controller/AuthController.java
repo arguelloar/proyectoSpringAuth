@@ -9,6 +9,7 @@ import com.araa.project.Exception.EmailAlreadyRegisteredException;
 import com.araa.project.Exception.IncorrectFormatException;
 import com.araa.project.Helper.CookieHelper;
 import com.araa.project.Helper.JwtHelper;
+import com.araa.project.Helper.UserResponse;
 import com.araa.project.Helper.Validator;
 import com.araa.project.Repository.RefreshTokenRepository;
 import com.araa.project.Service.TokenVerifierService;
@@ -63,14 +64,10 @@ public class AuthController {
 
     @Transactional
     @PostMapping("/login")
+    @ResponseBody
     public ResponseEntity<?> logIn(@RequestBody UserDTO userDTO,
-                                   HttpServletRequest requvest,
-                                   HttpServletResponse response,
-                                   @AuthenticationPrincipal User user) {
+                                   HttpServletResponse response) {
 
-        if(user != null){
-            return ResponseEntity.ok("Already logged in");
-        }else {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDTO.email(), userDTO.password());
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -85,9 +82,9 @@ public class AuthController {
 
             String accessToken = jwtHelper.generateAccessToken(userData);
 
+            UserResponse userResponse = new UserResponse(userData.getEmail(), true);
             response.addCookie(cookieBuilder(userData, accessToken, rToken));
-            return ResponseEntity.ok("Logged in");
-        }
+            return new ResponseEntity(userResponse,HttpStatus.OK);
     }
 
     @PostMapping("/logout")
@@ -102,9 +99,15 @@ public class AuthController {
 
     @Transactional
     @PostMapping("/register")
+    @ResponseBody
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO,
                                       HttpServletRequest request,
                                       HttpServletResponse response) throws EmailAlreadyRegisteredException {
+
+        Optional<User> userByEmail = userService.findByEmail(userDTO.email());
+        userByEmail.ifPresent(s -> {
+            throw new EmailAlreadyRegisteredException("Email already registered");
+        });
 
         User user = new User();
 
@@ -128,8 +131,9 @@ public class AuthController {
             String accessToken = jwtHelper.generateAccessToken(user);
 
 
+            UserResponse userResponse = new UserResponse(user.getEmail(),true);
             response.addCookie(cookieBuilder(user, accessToken, rToken));
-            return ResponseEntity.ok("User registered");
+            return new ResponseEntity(userResponse,HttpStatus.OK);
         }
         throw new IncorrectFormatException("Bad email/password format");
     }

@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import {addProduct} from "../services/productCRUD";
+import Alert from '../layout/Alert';
 
 export default function ProductAdd({setOpen}) {
 
   const [product, setProduct] = useState({});
   const [photo, setPhoto] = useState('');
-  const { name, price, stock, description} = product;
   const [img,setImg] = useState("https://www.kindpng.com/picc/m/564-5640631_file-antu-insert-image-svg-insert-image-here.png");
+  const [alertShow,setAlertShow] = useState(false);
+  const [message, setMessage] = useState("Bad product format, make sure you fill all the fields");
 
 
   const onInputChange = (e) => {
@@ -19,13 +21,14 @@ export default function ProductAdd({setOpen}) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addProduct(product,photo).then(res => res.ok ? window.location.reload() : alert("Bad request"));
+    addProduct(product,photo).then(res => res.ok ? window.location.reload() : setAlertShow(true));
   }
 
 
   return (
     <div className="mx-2 my-2 border">
       <form className="row justify-content-around" onSubmit={(e) => onSubmit(e)}>
+        {alertShow && <Alert message={message}/>}
         <div className="col-lg-7 form-outline mb-2">
           <label className="form-label" htmlFor="form0"></label>
           <img src={img} id="editImage" width={200 + 'px'} />

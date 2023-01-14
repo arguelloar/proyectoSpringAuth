@@ -48,7 +48,6 @@ public class InventoryController {
     @PostMapping("/add")
     public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart MultipartFile photo) throws IOException {
 
-
         Product product = new Product();
         product.setName(productDTO.name());
         product.setPrice(productDTO.price());

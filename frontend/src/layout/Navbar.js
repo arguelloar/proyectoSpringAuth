@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext} from "../App";
-import userLogout from "../services/userLogout";
+import { userLogout } from "../services/userAuth";
 
 export default function Navbar() {
 
@@ -37,7 +37,7 @@ export default function Navbar() {
                   </ul>
                 </div>
                 {auth.auth ? (<a href="/login" className="btn btn-outline-dark" role="button" id="btnLogout" onClick={handleClick}>Logout</a>) : 
-                (<a className="btn btn-outline-dark" role="button" id="btnLogout">Login</a>)}
+                (<a href="/login" className="btn btn-outline-dark" role="button" id="btnLogout">Login</a>)}
             </div>
         </nav>
     </div>

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import userRegister from "../services/userRegister";
+import { userRegister } from "../services/userAuth";
 import {emailValidator, pwValidator} from "../services/inputValidators";
+import Alert from "../layout/Alert";
+import { AuthContext } from "../App";
 
 
 export default function Register() {
     let navigate = useNavigate();
+    const [alertShow,setAlertShow] = useState(false);
+    const [message, setMessage] = useState("");
+    const auth = useContext(AuthContext);
 
     const [register, setRegister] = useState({
         firstName:"",
@@ -25,12 +30,15 @@ export default function Register() {
         e.preventDefault();
         if(emailValidator(register.email) && pwValidator(register.password)){
             userRegister(register).then(res => {
-                if(res.ok){
+                if(res.httpStatus == "FORBIDDEN"){
+                    setMessage(res.message);
+                    setAlertShow(true);
+                }else{
+                    auth.setAuth(true);
                     navigate("/");
                 }
-            });
-        }else{
-            alert("Incorrect format");
+            })
+            
         }
     }
 
@@ -38,24 +46,25 @@ export default function Register() {
     <div className="container-fluid text-center" onSubmit={(e) => onSubmit(e)}>
         <h1>Register Here</h1>
         <form className="mt-5 row justify-content-around">
+            {alertShow && <Alert message={message}/>}
             <div className="form-outline mb-4 col-lg-7">
                 <input type="text" name="firstName" id="form2Example2" className="form-control" value={firstName} onChange={(e) => onInputChange(e)}/>
-                <label className="form-label" for="form2Example2">First Name</label>
+                <label className="form-label" htmlFor="form2Example2">First Name</label>
             </div>
 
             <div className="form-outline mb-4 col-lg-7">
                 <input type="text" name="lastName" id="form2Example2" className="form-control" value={lastName} onChange={(e) => onInputChange(e)} />
-                <label className="form-label" for="form2Example2">Last Name</label>
+                <label className="form-label" htmlFor="form2Example2">Last Name</label>
             </div>
 
             <div className="col-lg-7 form-outline mb-4">
                 <input type="email" name="email" id="form2Example1" className="form-control" value={email} onChange={(e) => onInputChange(e)} />
-                <label className="form-label" for="form2Example1">Email address</label>
+                <label className="form-label" htmlFor="form2Example1">Email address</label>
             </div>
 
             <div className="form-outline mb-4 col-lg-7">
                 <input type="password" name="password" id="form2Example2" className="form-control" value={password} onChange={(e) => onInputChange(e)} />
-                <label className="form-label" for="form2Example2">Password</label>
+                <label className="form-label" htmlFor="form2Example2">Password</label>
             </div>
 
             <div className="row mb-4 col-lg-6">
