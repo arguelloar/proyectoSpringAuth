@@ -16,12 +16,14 @@ public class CookieHelper {
         String cookie = user.getEmail()+"%"+accessToken+"&%"+refreshToken;
         Cookie setCookie = new Cookie("userLogin",cookie);
         setCookie.setPath("/");
+        setCookie.setDomain("inventory-user-api.onrender.com");
         return setCookie;
     }
 
     public static Cookie deleteCookie(){
         Cookie setCookie = new Cookie("userLogin",null);
         setCookie.setPath("/");
+        setCookie.setPath("inventory-user-api.onrender.com");
         setCookie.setMaxAge(0);
         return setCookie;
     }
