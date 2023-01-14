@@ -8,7 +8,7 @@ RUN mvn clean package -Pprod -DskipTests
 #
 # Package stage
 #
-FROM openjdk:11
-ADD target/*.jar project
-ENTRYPOINT ["java", "-jar","project"]
+FROM openjdk:17
+COPY --from=build /target/project-0.0.1-SNAPSHOT.jar project.jar
 EXPOSE 8080
+ENTRYPOINT ["java", "-jar","project.jar"]
