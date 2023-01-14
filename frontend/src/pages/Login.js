@@ -55,7 +55,7 @@ export default function Login() {
             </div>
             <div className="col-12"><button type="submit" className="btn btn-primary btn-block mb-4">Sign in</button></div>
             <div className="text-center col-5">
-                <p>Not a member? <a role="button" onClick={() => navigate("/register")}>Register</a></p>
+                <p>Not a member? <a role="button" class="btn btn-primary" onClick={() => navigate("/register")}>Register</a></p>
             </div>
         </form>
     </div>
