@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 export async function cookieCheck(){
-    const response = await fetch("http://localhost:8080/api/auth/token", {
+    const response = await fetch("https://inventory-user-api.onrender.com/api/auth/token", {
             credentials: 'include',
             method: 'POST',
             headers: {

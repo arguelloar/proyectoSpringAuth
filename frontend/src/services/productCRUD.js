@@ -1,5 +1,5 @@
 const getAllProducts = async () => {
-    return await fetch("http://localhost:8080/api/inventory/all", {
+    return await fetch("https://inventory-user-api.onrender.com/api/inventory/all", {
       credentials: 'include',
       method: 'GET',
       headers: {
@@ -9,7 +9,7 @@ const getAllProducts = async () => {
   }
 
   const deleteProduct = async (id) => {
-    await fetch(`http://localhost:8080/api/inventory/delete/${id}`, {
+    await fetch(`https://inventory-user-api.onrender.com/api/inventory/delete/${id}`, {
       credentials: 'include',
       method: 'DELETE',
       headers: {
@@ -19,7 +19,7 @@ const getAllProducts = async () => {
   }
 
   const updateProduct = async (product, id) => {
-    return await fetch(`http://localhost:8080/api/inventory/update/${id}`, {
+    return await fetch(`https://inventory-user-api.onrender.com/api/inventory/update/${id}`, {
       credentials: 'include',
       method: 'PUT',
       headers: {
@@ -32,7 +32,7 @@ const getAllProducts = async () => {
   const updatePhoto = async (photo, id) => {
     let formData = new FormData();
     formData.append("photo",photo);
-    return await fetch(`http://localhost:8080/api/inventory/update/${id}/photo`, {
+    return await fetch(`https://inventory-user-api.onrender.com/api/inventory/update/${id}/photo`, {
       credentials: 'include',
       method: 'PUT',
       body: formData
@@ -46,7 +46,7 @@ const getAllProducts = async () => {
     formData.append("description",product.description);
     formData.append("price",product.price);
     formData.append("photo",photo);
-    return await fetch(`http://localhost:8080/api/inventory/add`, {
+    return await fetch(`https://inventory-user-api.onrender.com/api/inventory/add`, {
       credentials: 'include',
       method: 'POST',
       body: formData
