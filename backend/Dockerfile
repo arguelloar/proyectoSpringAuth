@@ -8,8 +8,7 @@ RUN mvn clean package -Pprod -DskipTests
 #
 # Package stage
 #
-FROM openjdk:17
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar backend.jar
-# ENV PORT=8080
+FROM openjdk:11
+ADD target/*.jar project
+ENTRYPOINT ["java", "-jar","project"]
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","backend.jar"]
