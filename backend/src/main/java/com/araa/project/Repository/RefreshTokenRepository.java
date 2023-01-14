@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Long> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM RefreshToken WHERE owner_id= ?1")
+    @Query("DELETE FROM RefreshToken r WHERE r.owner_id= ?1")
     void deleteById(Long id);
 
 
