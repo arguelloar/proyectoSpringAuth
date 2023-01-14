@@ -51,12 +51,11 @@ export default function Login() {
 
             <div className="row mb-4 col-lg-6">
             <div>
-            <a href="#!">Forgot password?</a>
             </div>
             </div>
             <div className="col-12"><button type="submit" className="btn btn-primary btn-block mb-4">Sign in</button></div>
             <div className="text-center col-5">
-                <p>Not a member? <a onClick={() => navigate("/register")}>Register</a></p>
+                <p>Not a member? <a role="button" onClick={() => navigate("/register")}>Register</a></p>
             </div>
         </form>
     </div>

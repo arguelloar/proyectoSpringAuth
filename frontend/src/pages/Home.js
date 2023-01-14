@@ -1,6 +1,8 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   
   return (
     <div className="container-fluid">
@@ -20,7 +22,7 @@ export default function Home() {
                 </ul>
             </div>
             <div className="col-lg-8 col-sm-12 mt-5">
-            <a href="/products" className="btn btn-outline-dark" role="button" id="btnLogout">View all products</a>
+            <a onClick={() => navigate("/products")} className="btn btn-outline-dark" role="button" id="btnLogout">View all products</a>
             </div>
         </div>
     </div>
