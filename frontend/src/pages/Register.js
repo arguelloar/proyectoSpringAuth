@@ -30,7 +30,7 @@ export default function Register() {
         e.preventDefault();
         if(emailValidator(register.email) && pwValidator(register.password)){
             userRegister(register).then(res => {
-                if(res.httpStatus == "FORBIDDEN"){
+                if(res.httpStatus === "FORBIDDEN"){
                     setMessage(res.message);
                     setAlertShow(true);
                 }else{

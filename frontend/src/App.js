@@ -2,7 +2,6 @@ import './App.css';
 import Navbar from './layout/Navbar';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
-import ProductAdd from "./pages/ProductAdd";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';

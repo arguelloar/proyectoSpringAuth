@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import { UserContext } from '../App';
-import { useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct, updateProduct, updatePhoto } from '../services/productCRUD';
 import ProductAdd from './ProductAdd';
 

@@ -24,7 +24,7 @@ export default function Login() {
     const onSubmit = (e) => {
         e.preventDefault();
         userLogin(login).then(res => {
-            if(res.httpStatus == "UNAUTHORIZED"){
+            if(res.httpStatus === "UNAUTHORIZED"){
                 auth.setAuth(false);
                 setAlertShow(!alertShow);
             }else{

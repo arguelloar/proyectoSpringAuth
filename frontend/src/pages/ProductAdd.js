@@ -8,7 +8,7 @@ export default function ProductAdd({setOpen}) {
   const [photo, setPhoto] = useState('');
   const [img,setImg] = useState("https://www.kindpng.com/picc/m/564-5640631_file-antu-insert-image-svg-insert-image-here.png");
   const [alertShow,setAlertShow] = useState(false);
-  const [message, setMessage] = useState("Bad product format, make sure you fill all the fields");
+  const [message] = useState("Bad product format, make sure you fill all the fields");
 
 
   const onInputChange = (e) => {
