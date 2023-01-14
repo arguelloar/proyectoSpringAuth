@@ -48,12 +48,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowedOrigins(List.of("https://inventory-user-api.onrender.com"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
+
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
         http.addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.cors().disable();
+        http.cors().configurationSource(request -> corsConfiguration);
         return http.build();
     }
 }
