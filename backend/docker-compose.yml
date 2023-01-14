@@ -1,0 +1,15 @@
+version: '3'
+services:
+  myspringapp:
+    image: backend
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cf13c82rrk0bppf5e5n0-a.oregon-postgres.render.com/proyectopersonal
+      - SPRING_DATASOURCE_USERNAME=proyectopersonal_user
+      - SPRING_DATASOURCE_PASSWORD=XbWrXZnGhBgK1e1iEBGS2roSIGEYikG6
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING.DATASOURCE.DRIVER-CLASS-NAME=org.postgresql.Driver
+      - SPRING.JPA.PROPERTIES.HIBERNATE.DIALECT=org.hibernate.dialect.PostgreSQLDialect
