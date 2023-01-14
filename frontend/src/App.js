@@ -3,6 +3,7 @@ import Navbar from './layout/Navbar';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
+import 'bootstrap/dist/js/bootstrap.bundle';
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Register from "./pages/Register";
