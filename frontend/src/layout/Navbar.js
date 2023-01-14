@@ -37,7 +37,7 @@ export default function Navbar() {
                   </ul>
                 </div>
                 {auth.auth ? (<a role="button" className="btn btn-outline-dark" id="btnLogout" onClick={handleClick}>Logout</a>) : 
-                (<a className="btn btn-outline-dark" role="button" id="btnLogout" onClick={navigate("/login")}>Login</a>)}
+                (<a className="btn btn-outline-dark" role="button" id="btnLogout" onClick={() => navigate("/login")}>Login</a>)}
             </div>
         </nav>
     </div>
