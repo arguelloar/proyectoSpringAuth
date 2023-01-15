@@ -29,7 +29,7 @@ export default function Login() {
                 setAlertShow(!alertShow);
             }else{
                 auth.setAuth(true);
-                navigate("/");
+                navigate("/home");
             }
         })
     }
