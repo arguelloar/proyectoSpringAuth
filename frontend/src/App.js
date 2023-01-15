@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
-import { isPresent } from './services/cookieAuth';
+import { cookieCheck } from './services/cookieAuth';
 import '@popperjs/core';
 
 
