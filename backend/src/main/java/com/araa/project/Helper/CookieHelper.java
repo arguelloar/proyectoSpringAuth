@@ -23,6 +23,7 @@ public class CookieHelper {
 
     public static ResponseCookie deleteCookie(){
         ResponseCookie responseCookie = ResponseCookie.from("userLogin",null)
+                .sameSite("None")
                 .maxAge(0)
                 .build();
         return responseCookie;
