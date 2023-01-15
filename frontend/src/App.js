@@ -20,14 +20,22 @@ export {AuthContext, UserContext};
 
 function App() {
 
+  const [role,setRole] = useState("ROLE_USER");
+
   function setAuthentication(){
     let authed = false;
-    isPresent().then(res => res.ok ? authed = true : authed = false);
+    cookieCheck().then(res => {
+      if(res.ok) authed=true;
+      res.json().then(data => {
+        setRole(data[0].name) 
+      });
+    })
+    console.log(authed);
+    console.log(role);
     return authed;
   }
 
   const [auth,setAuth] = useState(setAuthentication());
-  const [role,setRole] = useState("ROLE_USER");
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
