@@ -39,6 +39,9 @@ export default function Register() {
                 }
             })
             
+        }else{
+            setAlertShow(true);
+            setMessage("Incorrect email or password format")
         }
     }
 
@@ -47,6 +50,7 @@ export default function Register() {
         <h1>Register Here</h1>
         <form className="mt-5 row justify-content-around">
             {alertShow && <Alert message={message}/>}
+            <p>Password must have 8 characters and contain atleast 1 number</p>
             <div className="form-outline mb-4 col-lg-7">
                 <input type="text" name="firstName" id="form2Example2" className="form-control" value={firstName} onChange={(e) => onInputChange(e)}/>
                 <label className="form-label" htmlFor="form2Example2">First Name</label>
