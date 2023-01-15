@@ -30,11 +30,11 @@ function App() {
         <Router>
         <Navbar />
         <Routes>
-          {/* <Route element={<PrivateRoutes />}> */}
+          <Route element={<PrivateRoutes />}>
             <Route exact path="/users" element={<Products />}/>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/home" element={<Home />} />
             <Route exact path="/product/add" element={<Home />} />
-          {/* </Route> */}
+          </Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
         </Routes>
