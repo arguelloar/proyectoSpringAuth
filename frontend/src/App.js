@@ -32,7 +32,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route exact path="/products" element={<Products />}/>
-            <Route exact path="/home" element={<Home />} />
+            <Route exact path="/" element={<Home />} />
           </Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
