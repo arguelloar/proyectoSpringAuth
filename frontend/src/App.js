@@ -19,8 +19,9 @@ const UserContext = createContext({});
 export {AuthContext, UserContext};
 
 function App() {
+  console.log(isPresent().then());
 
-  const [auth,setAuth] = useState(isPresent());
+  const [auth,setAuth] = useState(isPresent().then(res => res));
   const [role,setRole] = useState("ROLE_USER");
 
   return (
