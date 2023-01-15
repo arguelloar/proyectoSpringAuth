@@ -20,6 +20,7 @@ export {AuthContext, UserContext};
 
 function App() {
 
+  const [isLoggedIn,setLoggedIn] = useState(false);
 
   const [role,setRole] = useState("ROLE_USER");
   const [auth,setAuth] = useState(true);
@@ -33,8 +34,8 @@ function App() {
         <Routes>       
           <Route element={<PrivateRoutes />}>
             <Route exact path="/products" element={<Products />}/>
-            <Route exact path="/" element={<Home />} />
           </Route>
+          <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
         </Routes>
