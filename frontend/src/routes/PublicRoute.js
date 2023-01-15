@@ -4,7 +4,7 @@ import { AuthContext, UserContext } from '../App';
 import {cookieCheck} from '../services/cookieAuth';
 
 
-const PrivateRoutes = () => {
+const PublicRoutes = () => {
   const auth = useContext(AuthContext);
   const role = useContext(UserContext);
 
@@ -17,8 +17,7 @@ const PrivateRoutes = () => {
   })
   
   return(
-    auth.auth ? <Outlet /> : <Navigate to="/login"/>
-  )
+    auth.auth ? <Navigate to="/"/> : <Outlet />)
 };
 
-export default PrivateRoutes;
+export default PublicRoutes;
