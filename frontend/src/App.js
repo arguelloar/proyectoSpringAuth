@@ -12,12 +12,10 @@ import Products from './pages/Products';
 import { createContext, useState } from 'react';
 import { isPresent } from './services/cookieAuth';
 import '@popperjs/core';
-import { createBrowserHistory } from 'history';
 
 
 const AuthContext = createContext({});  
 const UserContext = createContext({});
-const history = createBrowserHistory();
 export {AuthContext, UserContext};
 
 function App() {
@@ -29,14 +27,14 @@ function App() {
     <AuthContext.Provider value={{auth,setAuth}}>
       <UserContext.Provider value={{role,setRole}}>
       <div className="App">
-        <Router history={history}>
+        <Router>
         <Navbar />
         <Routes>
-          <Route element={<PrivateRoutes />}>
+          {/* <Route element={<PrivateRoutes />}> */}
             <Route exact path="/users" element={<Products />}/>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/product/add" element={<Home />} />
-          </Route>
+          {/* </Route> */}
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
         </Routes>
