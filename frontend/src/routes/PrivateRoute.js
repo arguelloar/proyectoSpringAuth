@@ -11,9 +11,6 @@ const PrivateRoutes = () => {
   function setAuthentication(){
     cookieCheck().then(res => {
       if(res.ok) auth.setAuth(true);
-      res.json().then(data => {
-        setRole(data[0].name) 
-      });
     })
   }
   setAuthentication();
