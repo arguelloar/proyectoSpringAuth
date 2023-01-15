@@ -18,7 +18,6 @@ public class AccessTokenEntryPoint implements AuthenticationEntryPoint {
     private CookieHelper cookieHelper;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.addCookie(CookieHelper.deleteCookie());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized");
     }
 }

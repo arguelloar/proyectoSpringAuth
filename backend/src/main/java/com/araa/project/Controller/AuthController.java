@@ -16,6 +16,7 @@ import com.araa.project.Service.TokenVerifierService;
 import com.araa.project.Service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -83,7 +84,7 @@ public class AuthController {
             String accessToken = jwtHelper.generateAccessToken(userData);
 
             UserResponse userResponse = new UserResponse(userData.getEmail(), true);
-            response.addCookie(cookieBuilder(userData, accessToken, rToken));
+            response.setHeader(HttpHeaders.SET_COOKIE, cookieBuilder(userData,accessToken,rToken).toString());
             return new ResponseEntity(userResponse,HttpStatus.OK);
     }
 
@@ -93,7 +94,7 @@ public class AuthController {
                                     @AuthenticationPrincipal User user) {
 
         refreshTokenRepository.deleteById(user.getId());
-        response.addCookie(deleteCookie());
+        response.setHeader(HttpHeaders.SET_COOKIE, deleteCookie().toString());
         return ResponseEntity.ok("User logout");
     }
 
@@ -132,7 +133,7 @@ public class AuthController {
 
 
             UserResponse userResponse = new UserResponse(user.getEmail(),true);
-            response.addCookie(cookieBuilder(user, accessToken, rToken));
+            response.setHeader(HttpHeaders.SET_COOKIE, cookieBuilder(user,accessToken,rToken).toString());
             return new ResponseEntity(userResponse,HttpStatus.OK);
         }
         throw new IncorrectFormatException("Bad email/password format");
@@ -157,7 +158,7 @@ public class AuthController {
 
         String accessToken = jwtHelper.generateAccessToken(user);
 
-        response.addCookie(cookieBuilder(user, accessToken, rToken));
+        response.setHeader(HttpHeaders.SET_COOKIE, cookieBuilder(user,accessToken,rToken).toString());
         return ResponseEntity.ok("Admin registered");
     }
 
@@ -166,7 +167,7 @@ public class AuthController {
         if(tokenVerifierService.isAuthenticated(cookieGet(request))){
             return new ResponseEntity<>(user.getRoles(),HttpStatus.OK);
         }
-        response.addCookie(deleteCookie());
+        response.setHeader(HttpHeaders.SET_COOKIE, deleteCookie().toString());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 

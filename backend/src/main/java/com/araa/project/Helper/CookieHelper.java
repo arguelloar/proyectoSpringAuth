@@ -2,6 +2,7 @@ package com.araa.project.Helper;
 
 import com.araa.project.Entity.User;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
@@ -12,18 +13,19 @@ import java.util.stream.Stream;
 @Component
 public class CookieHelper {
 
-    public static Cookie cookieBuilder(User user, String accessToken, String refreshToken){
+    public static ResponseCookie cookieBuilder(User user, String accessToken, String refreshToken){
         String cookie = user.getEmail()+"%"+accessToken+"&%"+refreshToken;
-        Cookie setCookie = new Cookie("userLogin",cookie);
-        setCookie.setPath("/");
-        return setCookie;
+        ResponseCookie responseCookie = ResponseCookie.from("userLogin",cookie)
+                .sameSite("None")
+                .build();
+        return responseCookie;
     }
 
-    public static Cookie deleteCookie(){
-        Cookie setCookie = new Cookie("userLogin",null);
-        setCookie.setPath("/");
-        setCookie.setMaxAge(0);
-        return setCookie;
+    public static ResponseCookie deleteCookie(){
+        ResponseCookie responseCookie = ResponseCookie.from("userLogin",null)
+                .maxAge(0)
+                .build();
+        return responseCookie;
     }
 
     public static Optional<Cookie> cookieGet(HttpServletRequest request){

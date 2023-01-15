@@ -8,6 +8,7 @@ import com.araa.project.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -56,7 +57,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);
-                response.addCookie(cookieBuilder(user, jwtHelper.generateAccessToken(user), refreshToken));
+                response.setHeader(HttpHeaders.SET_COOKIE, cookieBuilder(user,jwtHelper.generateAccessToken(user),refreshToken).toString());
             }
         });
         filterChain.doFilter(request, response);
