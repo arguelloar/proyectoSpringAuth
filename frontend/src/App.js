@@ -30,10 +30,8 @@ function App() {
         setRole(data[0].name) 
       });
     })
-    console.log(auth);
-    console.log(role);
   }
-  
+
   setAuthentication();
 
   return (
