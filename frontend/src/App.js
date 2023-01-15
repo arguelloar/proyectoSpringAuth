@@ -11,11 +11,13 @@ import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
 import { isPresent } from './services/cookieAuth';
+import { createBrowserRouter } from 'react-router-dom';
 import '@popperjs/core';
 
 
 const AuthContext = createContext({});  
 const UserContext = createContext({});
+const history = createBrowserRouter();
 export {AuthContext, UserContext};
 
 function App() {
@@ -27,11 +29,11 @@ function App() {
     <AuthContext.Provider value={{auth,setAuth}}>
       <UserContext.Provider value={{role,setRole}}>
       <div className="App">
-        <Router>
+        <Router history={history}>
         <Navbar />
         <Routes>
           <Route element={<PrivateRoutes />}>
-            <Route exact path="/products" element={<Products />}/>
+            <Route exact path="/users" element={<Products />}/>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/product/add" element={<Home />} />
           </Route>
