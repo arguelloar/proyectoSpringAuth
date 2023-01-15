@@ -11,13 +11,13 @@ import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
 import { isPresent } from './services/cookieAuth';
-import { createBrowserRouter } from 'react-router-dom';
 import '@popperjs/core';
+import { createBrowserHistory } from 'history';
 
 
 const AuthContext = createContext({});  
 const UserContext = createContext({});
-const history = createBrowserRouter();
+const history = createBrowserHistory();
 export {AuthContext, UserContext};
 
 function App() {
