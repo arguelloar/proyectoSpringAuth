@@ -36,18 +36,13 @@ function App() {
       <div className="App">
         <BrowserRouter>
         <Navbar />
-        <Routes>
-          
+        <Routes>       
           <Route element={<PrivateRoutes />}>
             <Route exact path="/products" element={<Products />}/>
             <Route exact path="/" element={<Home />} />
           </Route>
-
-          <Route element={<PublicRoutes />}>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
-          </Route>
-
         </Routes>
         </BrowserRouter>
       </div>
