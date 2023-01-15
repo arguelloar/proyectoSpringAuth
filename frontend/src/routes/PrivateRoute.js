@@ -7,8 +7,12 @@ import { AuthContext } from '../App';
 const PrivateRoutes = () => {
   const auth = useContext(AuthContext);
   console.log("FROM PRIVATEROUTE"+auth.auth);
-  
 
+  cookieCheck().then(res => {
+    if(res.ok) auth.setAuth(true);
+  })
+
+  console.log("FROM PRIVATEROUTE"+auth.auth);
   
   return(
     auth.auth ? <Outlet /> : <Navigate to="/login"/>
