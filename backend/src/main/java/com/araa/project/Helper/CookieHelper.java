@@ -17,7 +17,7 @@ public class CookieHelper {
         String cookie = user.getEmail()+"%"+accessToken+"&%"+refreshToken;
         ResponseCookie responseCookie = ResponseCookie.from("userLogin",cookie)
                 .sameSite("None")
-                .domain("localhost")
+                .domain("api-arguelloar.onrender.com")
                 .path("/")
                 .secure(true)
                 .build();
@@ -27,7 +27,7 @@ public class CookieHelper {
     public static ResponseCookie deleteCookie(){
         ResponseCookie responseCookie = ResponseCookie.from("userLogin",null)
                 .sameSite("None")
-                .domain("localhost")
+                .domain("api-arguelloar.onrender.com")
                 .path("/")
                 .secure(true)
                 .maxAge(0)
