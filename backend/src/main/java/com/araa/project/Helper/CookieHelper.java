@@ -17,7 +17,8 @@ public class CookieHelper {
         String cookie = user.getEmail()+"%"+accessToken+"&%"+refreshToken;
         ResponseCookie responseCookie = ResponseCookie.from("userLogin",cookie)
                 .sameSite("None")
-                .domain("http://localhost:3000/")
+                .domain("localhost")
+                .path("/")
                 .secure(true)
                 .build();
         return responseCookie;
@@ -26,7 +27,8 @@ public class CookieHelper {
     public static ResponseCookie deleteCookie(){
         ResponseCookie responseCookie = ResponseCookie.from("userLogin",null)
                 .sameSite("None")
-                .domain("http://localhost:3000/")
+                .domain("localhost")
+                .path("/")
                 .secure(true)
                 .maxAge(0)
                 .build();
