@@ -6,6 +6,7 @@ import { AuthContext } from '../App';
 
 const PrivateRoutes = () => {
   const auth = useContext(AuthContext);
+  console.log("FROM PRIVATEROUTE"+auth.auth);
   
 
   
