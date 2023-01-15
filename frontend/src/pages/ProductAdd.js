@@ -24,7 +24,7 @@ export default function ProductAdd({setOpen}) {
     e.preventDefault();
     addProduct(product,photo).then(res => {
       if(res.ok){
-        navigate("/products")
+        setOpen(false);
       }else{ 
         setAlertShow(true);
       }

@@ -48,7 +48,7 @@ export default function Products() {
   useEffect(() => {
     getAllProducts().then(response => response.json())
       .then(data => setProducts(data));
-  }, []);
+  }, [open]);
 
   const handleChange = (e) => {
     setEdit({...edit,[e.target.name]: e.target.value});
@@ -60,7 +60,7 @@ export default function Products() {
     updatePhoto(photo,id);
     updateProduct(edit,id).then(response => {
       if(response.ok){
-        navigate("/products");
+        window.location.reload();
       }
     })  
   }
@@ -114,7 +114,7 @@ export default function Products() {
   
                     {role.role === "ROLE_ADMIN" ? <button className="btn btn-outline-danger mx-2" onClick={() => {
                       deleteProduct(product.id);
-                      navigate("/products");
+                      window.location.reload();
                     }}>Delete</button> : <i></i>}
                     <div className="modal fade" id={"viewProduct" + product.id} tabIndex="-1" aria-labelledby="viewProductLabel" aria-hidden="true">
                       <div className="modal-dialog">
