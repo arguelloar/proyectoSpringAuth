@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import 'bootstrap/dist/js/bootstrap.bundle';
 import Login from "./pages/Login";
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Register from "./pages/Register";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
@@ -27,7 +27,7 @@ function App() {
     <AuthContext.Provider value={{auth,setAuth}}>
       <UserContext.Provider value={{role,setRole}}>
       <div className="App">
-        <Router>
+        <BrowserRouter>
         <Navbar />
         <Routes>
           <Route element={<PrivateRoutes />}>
@@ -38,7 +38,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
         </Routes>
-        </Router>
+        </BrowserRouter>
       </div>
       </UserContext.Provider>
     </AuthContext.Provider>
