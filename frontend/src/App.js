@@ -19,9 +19,14 @@ const UserContext = createContext({});
 export {AuthContext, UserContext};
 
 function App() {
-  console.log(isPresent().then());
 
-  const [auth,setAuth] = useState(isPresent().then(res => res));
+  function setAuthentication(){
+    let authed = false;
+    isPresent().then(res => res.ok ? authed = true : authed = false);
+    return authed;
+  }
+
+  const [auth,setAuth] = useState(setAuthentication());
   const [role,setRole] = useState("ROLE_USER");
 
   return (

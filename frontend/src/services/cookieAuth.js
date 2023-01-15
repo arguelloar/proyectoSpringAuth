@@ -18,5 +18,5 @@ export async function isPresent(){
                 'Content-Type': 'application/json'
             }
         }).catch("Cannot access to this resource without authentication");
-        return response.ok;
+        return response;
 }
