@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
-import { cookieCheck, isPresent } from './services/cookieAuth';
+import { isPresent } from './services/cookieAuth';
 import '@popperjs/core';
 
 
@@ -20,12 +20,7 @@ export {AuthContext, UserContext};
 
 function App() {
 
-  const [auth,setAuth] = useState(false);
-  cookieCheck.then(res => {
-    if(res.ok){
-      setAuth(true);
-    }
-  })
+  const [auth,setAuth] = useState(isPresent());
   const [role,setRole] = useState("ROLE_USER");
 
   return (
