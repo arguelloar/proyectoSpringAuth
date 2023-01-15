@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {addProduct} from "../services/productCRUD";
 import Alert from '../layout/Alert';
+import { useNavigate } from "react-router-dom";
 
 export default function ProductAdd({setOpen}) {
-
+  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [photo, setPhoto] = useState('');
   const [img,setImg] = useState("https://www.kindpng.com/picc/m/564-5640631_file-antu-insert-image-svg-insert-image-here.png");
@@ -21,8 +22,13 @@ export default function ProductAdd({setOpen}) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addProduct(product,photo).then(res => res.ok ? window.location.reload() : setAlertShow(true));
-  }
+    addProduct(product,photo).then(res => {
+      if(res.ok){
+        navigate("/products")
+      }else{ 
+        setAlertShow(true);
+      }
+    })}
 
 
   return (

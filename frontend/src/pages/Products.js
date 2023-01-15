@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState} from 'react';
 import { UserContext } from '../App';
 import { getAllProducts, deleteProduct, updateProduct, updatePhoto } from '../services/productCRUD';
 import ProductAdd from './ProductAdd';
+import { useNavigate } from "react-router-dom";
 
 export default function Products() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const role = useContext(UserContext);
   const [edit,setEdit] = useState({});
@@ -58,7 +60,7 @@ export default function Products() {
     updatePhoto(photo,id);
     updateProduct(edit,id).then(response => {
       if(response.ok){
-        window.location.reload();
+        navigate("/products");
       }
     })  
   }
@@ -112,7 +114,7 @@ export default function Products() {
   
                     {role.role === "ROLE_ADMIN" ? <button className="btn btn-outline-danger mx-2" onClick={() => {
                       deleteProduct(product.id);
-                      window.location.reload();
+                      navigate("/products");
                     }}>Delete</button> : <i></i>}
                     <div className="modal fade" id={"viewProduct" + product.id} tabIndex="-1" aria-labelledby="viewProductLabel" aria-hidden="true">
                       <div className="modal-dialog">
