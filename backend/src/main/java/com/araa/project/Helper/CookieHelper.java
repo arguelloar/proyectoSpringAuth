@@ -19,6 +19,7 @@ public class CookieHelper {
                 .sameSite("None")
                 .domain("api-arguelloar.onrender.com")
                 .path("/")
+                .maxAge(86400)
                 .secure(true)
                 .build();
         return responseCookie;

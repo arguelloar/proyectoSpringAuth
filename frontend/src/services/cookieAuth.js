@@ -9,3 +9,7 @@ export async function cookieCheck(){
         }).catch("Cannot access to this resource without authentication");
         return response;
 }
+
+export function isPresent(){
+    return Cookies.get("userLogin") != undefined ? true : false;
+}

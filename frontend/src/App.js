@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./routes/PrivateRoute";
 import Products from './pages/Products';
 import { createContext, useState } from 'react';
-import { cookieCheck } from './services/cookieAuth';
+import { isPresent } from './services/cookieAuth';
 import '@popperjs/core';
 
 
@@ -21,7 +21,7 @@ export {AuthContext, UserContext};
 function App() {
 
   const [role,setRole] = useState("ROLE_USER");
-  const [auth,setAuth] = useState(false);
+  const [auth,setAuth] = useState(isPresent());
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
