@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState} from 'react';
 import { UserContext } from '../App';
 import { getAllProducts, deleteProduct, updateProduct, updatePhoto } from '../services/productCRUD';
 import ProductAdd from './ProductAdd';
-import { useNavigate } from "react-router-dom";
 
 export default function Products() {
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const role = useContext(UserContext);
   const [edit,setEdit] = useState({});

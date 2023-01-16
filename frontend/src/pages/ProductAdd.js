@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {addProduct} from "../services/productCRUD";
 import Alert from '../layout/Alert';
-import { useNavigate } from "react-router-dom";
 
 export default function ProductAdd({setOpen,setRefresh,refresh}) {
-  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [photo, setPhoto] = useState('');
   const [img,setImg] = useState("https://www.kindpng.com/picc/m/564-5640631_file-antu-insert-image-svg-insert-image-here.png");
@@ -37,9 +35,10 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
       <form className="row justify-content-around" onSubmit={(e) => onSubmit(e)}>
         {alertShow && <Alert message={message}/>}
         <div className="col-lg-7 form-outline mb-2">
+        <p>.jpg Images Only</p>
           <label className="form-label" htmlFor="form0"></label>
           <img src={img} id="editImage" width={200 + 'px'} />
-          <input type="file" name="file" id="form0" className="form-control mt-2" accept="image/*" 
+          <input type="file" name="file" id="form0" className="form-control mt-2" accept="image/jpeg" 
           onChange={(e) => {
             onPhotoChange(e)
             setImg(URL.createObjectURL(e.target.files[0]))
