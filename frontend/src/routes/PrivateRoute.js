@@ -1,13 +1,12 @@
 import { useContext, useEffect } from 'react';
 import {Outlet, Navigate} from 'react-router-dom'
-import { AuthContext, UserContext, LoggedIn, LoggedIn } from '../App';
+import { AuthContext, UserContext} from '../App';
 import {cookieCheck} from '../services/cookieAuth';
 
 
 const PrivateRoutes = () => {
   const auth = useContext(AuthContext);
   const role = useContext(UserContext);
-  const LoggedIn = useContext(LoggedIn);
 
   useEffect(() => {
     cookieCheck().then(res => {
