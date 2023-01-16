@@ -13,6 +13,7 @@ export default function Products() {
   const [img,setImg] = useState();
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState("ASC");
+  const [refresh,setRefresh] = useState(true);
 
   const sortingName = (col) => {
     if(sort === "ASC"){
@@ -48,7 +49,7 @@ export default function Products() {
   useEffect(() => {
     getAllProducts().then(response => response.json())
       .then(data => setProducts(data));
-  }, [open]);
+  }, [refresh]);
 
   const handleChange = (e) => {
     setEdit({...edit,[e.target.name]: e.target.value});
@@ -60,7 +61,7 @@ export default function Products() {
     updatePhoto(photo,id);
     updateProduct(edit,id).then(response => {
       if(response.ok){
-        window.location.reload();
+        setRefresh(!refresh)
       }
     })  
   }
@@ -80,7 +81,7 @@ export default function Products() {
           Add new product
         </button> : <i></i>}
         
-        {open && <ProductAdd setOpen={setOpen}/>}
+        {open && <ProductAdd setOpen={setOpen} setRefresh={setRefresh} refresh={refresh}/>}
         
         
         <div className="row justify-content-around">
@@ -114,7 +115,7 @@ export default function Products() {
   
                     {role.role === "ROLE_ADMIN" ? <button className="btn btn-outline-danger mx-2" onClick={() => {
                       deleteProduct(product.id);
-                      window.location.reload();
+                      setRefresh(!refresh);
                     }}>Delete</button> : <i></i>}
                     <div className="modal fade" id={"viewProduct" + product.id} tabIndex="-1" aria-labelledby="viewProductLabel" aria-hidden="true">
                       <div className="modal-dialog">

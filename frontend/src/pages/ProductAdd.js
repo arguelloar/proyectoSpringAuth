@@ -3,7 +3,7 @@ import {addProduct} from "../services/productCRUD";
 import Alert from '../layout/Alert';
 import { useNavigate } from "react-router-dom";
 
-export default function ProductAdd({setOpen}) {
+export default function ProductAdd({setOpen,setRefresh,refresh}) {
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [photo, setPhoto] = useState('');
@@ -24,6 +24,7 @@ export default function ProductAdd({setOpen}) {
     e.preventDefault();
     addProduct(product,photo).then(res => {
       if(res.ok){
+        setRefresh(!refresh);
         setOpen(false);
       }else{ 
         setAlertShow(true);
