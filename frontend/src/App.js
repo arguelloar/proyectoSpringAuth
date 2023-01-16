@@ -21,7 +21,7 @@ export {AuthContext, UserContext};
 function App() {
 
   const [role,setRole] = useState("ROLE_USER");
-  const [auth,setAuth] = useState(true);
+  const [auth,setAuth] = useState(false);
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
