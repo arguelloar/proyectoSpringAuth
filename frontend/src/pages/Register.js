@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userRegister } from "../services/userAuth";
 import {emailValidator, pwValidator} from "../services/inputValidators";
 import Alert from "../layout/Alert";
-import { AuthContext, LoggedIn } from "../App";
+import { AuthContext } from "../App";
 
 
 export default function Register() {
@@ -11,7 +11,6 @@ export default function Register() {
     const [alertShow,setAlertShow] = useState(false);
     const [message, setMessage] = useState("");
     const auth = useContext(AuthContext);
-    const isLoggedIn = useContext(LoggedIn);
 
     const [register, setRegister] = useState({
         firstName:"",
@@ -37,7 +36,6 @@ export default function Register() {
                 }else{
                     auth.setAuth(true);
                     navigate("/");
-                    isLoggedIn.isLoggedIn(true);
                 }
             })
             

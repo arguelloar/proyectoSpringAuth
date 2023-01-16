@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoggedIn } from "../App";
+import { AuthContext} from "../App";
 import { userLogout } from "../services/userAuth";
 
 export default function Navbar() {
 
   const navigate = useNavigate();
-  const isLoggedIn = useContext(LoggedIn);
+  const auth = useContext(AuthContext);
 
   const handleClick = () => {
     userLogout();
-    isLoggedIn.setLoggedIn(false);
+    auth.setAuth(false);
     navigate("/login");
   }
 
@@ -36,7 +36,7 @@ export default function Navbar() {
                     </li>
                   </ul>
                 </div>
-                {isLoggedIn.isLoggedIn ? (<a role="button" className="btn btn-outline-dark" id="btnLogout" onClick={handleClick}>Logout</a>) : 
+                {auth.auth ? (<a role="button" className="btn btn-outline-dark" id="btnLogout" onClick={handleClick}>Logout</a>) : 
                 (<a className="btn btn-outline-dark" role="button" id="btnLogout" onClick={() => navigate("/login")}>Login</a>)}
             </div>
         </nav>

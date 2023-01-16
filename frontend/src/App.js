@@ -13,21 +13,19 @@ import { createContext, useState } from 'react';
 import { cookieCheck } from './services/cookieAuth';
 import '@popperjs/core';
 
-const LoggedIn = createContext({});
+
 const AuthContext = createContext({});  
 const UserContext = createContext({});
-export {AuthContext, UserContext, LoggedIn};
+export {AuthContext, UserContext};
 
 function App() {
 
-  const [isLoggedIn,setLoggedIn] = useState(false);
   const [role,setRole] = useState("ROLE_USER");
   const [auth,setAuth] = useState(true);
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
       <UserContext.Provider value={{role,setRole}}>
-        <LoggedIn.Provider value={{isLoggedIn,setLoggedIn}}>
       <div className="App">
         <BrowserRouter>
         <Navbar />
@@ -41,7 +39,6 @@ function App() {
         </Routes>
         </BrowserRouter>
       </div>
-      </LoggedIn.Provider>
       </UserContext.Provider>
     </AuthContext.Provider>
   );
