@@ -11,5 +11,7 @@ export async function cookieCheck(){
 }
 
 export function isPresent(){
+    console.log(Cookies.get("userLogin"));
+    console.log(Cookies.get("userLogi"));
     return Cookies.get("userLogin") != undefined ? true : false;
 }
