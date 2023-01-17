@@ -1,5 +1,5 @@
 export default async function userLogin(login){
-    const response = await fetch(`${process.env.API}/auth/login`, {
+    const response = await fetch("https://api.arguelloar.com/api/auth/login", {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -12,7 +12,7 @@ export default async function userLogin(login){
 }
 
 export async function userRegister(register){
-    const response = await fetch(`${process.env.API}/auth/register`, {
+    const response = await fetch("https://api.arguelloar.com/api/auth/register", {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -25,7 +25,7 @@ export async function userRegister(register){
 }
 
 export async function userLogout(){
-    const response = await fetch(`${process.env.API}/auth/logout`, {
+    const response = await fetch("https://api.arguelloar.com/api/auth/logout", {
             credentials: 'include',
             method: 'POST',
             headers: {

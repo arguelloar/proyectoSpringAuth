@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 export async function cookieCheck(){
-    const response = await fetch(`${process.env.API}/auth/token`, {
+    const response = await fetch("https://api.arguelloar.com/api/auth/token", {
             credentials: 'include',
             method: 'POST',
             headers: {
