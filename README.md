@@ -1,6 +1,6 @@
 # proyectoSpringAuth #
 
-[https://arguelloar.onrender.com/](https://arguelloar.onrender.com/)
+[inventory.arguelloar.com](https://inventory.arguelloar.com)
 
 ## REST API and Responsive Page  ##
 
