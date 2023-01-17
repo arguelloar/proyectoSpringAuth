@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 export async function cookieCheck(){
-    const response = await fetch(`${process.env.API_URL}/auth/token`, {
+    const response = await fetch(`${process.env.URL_API}/auth/token`, {
             credentials: 'include',
             method: 'POST',
             headers: {

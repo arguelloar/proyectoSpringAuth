@@ -1,5 +1,5 @@
 export default async function userLogin(login){
-    const response = await fetch(`${process.env.API_URL}/auth/login`, {
+    const response = await fetch(`${process.env.URL_API}/auth/login`, {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -12,7 +12,7 @@ export default async function userLogin(login){
 }
 
 export async function userRegister(register){
-    const response = await fetch(`${process.env.API_URL}/auth/register`, {
+    const response = await fetch(`${process.env.URL_API}/auth/register`, {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -25,7 +25,7 @@ export async function userRegister(register){
 }
 
 export async function userLogout(){
-    const response = await fetch(`${process.env.API_URL}/auth/logout`, {
+    const response = await fetch(`${process.env.URL_API}/auth/logout`, {
             credentials: 'include',
             method: 'POST',
             headers: {
