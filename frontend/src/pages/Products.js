@@ -56,7 +56,9 @@ export default function Products() {
 
   const onClick = (e,id) => {
     e.preventDefault();
-    updatePhoto(photo,id);
+    if(photo !== ''){
+      updatePhoto(photo,id);
+    }
     updateProduct(edit,id).then(response => {
       if(response.ok){
         setRefresh(!refresh)
