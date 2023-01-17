@@ -2,6 +2,10 @@
 
 [inventory.arguelloar.com](https://inventory.arguelloar.com)
 
+Admin credentials:
+admin
+arguelloar
+
 ## REST API and Responsive Page  ##
 
 This is my first project where i implement a REST API utilizing Java and Spring, it contains USER Login/Registration, and Inventory page for visualizing product data.
