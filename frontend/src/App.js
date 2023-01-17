@@ -22,6 +22,7 @@ function App() {
 
   const [role,setRole] = useState("ROLE_USER");
   const [auth,setAuth] = useState(isPresent());
+  console.log(process.env.API);
 
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
