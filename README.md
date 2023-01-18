@@ -1,6 +1,6 @@
 # proyectoSpringAuth #
 
-[inventory.arguelloar.com](https://inventory.arguelloar.com)
+Website Link: [inventory.arguelloar.com](https://inventory.arguelloar.com)
 
 Admin credentials:
 admin
