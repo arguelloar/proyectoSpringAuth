@@ -2,9 +2,7 @@
 
 Website Link: [inventory.arguelloar.com](https://inventory.arguelloar.com)
 
-Admin credentials:
-admin
-arguelloar
+If you want to see admin's view, send me a message
 
 ## REST API and Responsive Page  ##
 
