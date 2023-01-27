@@ -1,5 +1,5 @@
 const EREX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PREX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+const PREX = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=\S+$).{8,20}$/;
 const NREX = /^\d+$/;
 
 export function emailValidator(email){
