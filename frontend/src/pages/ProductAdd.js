@@ -4,7 +4,6 @@ import Alert from '../layout/Alert';
 
 export default function ProductAdd({setOpen,setRefresh,refresh}) {
   const [product, setProduct] = useState({});
-  const [photo, setPhoto] = useState('');
   const [img,setImg] = useState("https://www.kindpng.com/picc/m/564-5640631_file-antu-insert-image-svg-insert-image-here.png");
   const [alertShow,setAlertShow] = useState(false);
   const [message] = useState("Bad product format, make sure you fill all the fields");
@@ -14,13 +13,21 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const onPhotoChange = (e) => {
-    setPhoto(e.target.files[0]);
+  function handleOpenWidget(){
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'domamliq5', 
+      uploadPreset: 'xvfhpubb'}, (error, result) => { 
+        if (!error && result && result.event === "success") { 
+          setImg(result.info.url);
+        }
+      }
+    );
+    myWidget.open();
   }
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addProduct(product,photo).then(res => {
+    addProduct(product,img).then(res => {
       if(res.ok){
         setRefresh(!refresh);
         setOpen(false);
@@ -38,11 +45,7 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
         <p>.jpg Images Only</p>
           <label className="form-label" htmlFor="form0"></label>
           <img src={img} id="editImage" width={200 + 'px'} />
-          <input type="file" name="file" id="form0" className="form-control mt-2" accept="image/jpeg" 
-          onChange={(e) => {
-            onPhotoChange(e)
-            setImg(URL.createObjectURL(e.target.files[0]))
-          }}/>
+          <button id="upload_widget" class="cloudinary-button" onClick={() => handleOpenWidget()}>Upload files</button> 
         </div>
         <div className="col-lg-7 form-outline mb-2">
           <label className="form-label" htmlFor="form1">Name</label>

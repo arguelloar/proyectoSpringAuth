@@ -7,11 +7,27 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const role = useContext(UserContext);
   const [edit,setEdit] = useState({});
-  const [photo,setPhoto] = useState('');
-  const [img,setImg] = useState();
+  const [img,setImg] = useState("");
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState("ASC");
   const [refresh,setRefresh] = useState(true);
+
+  function handleOpenWidget(){
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'domamliq5', 
+      uploadPreset: 'xvfhpubb'}, (error, result) => { 
+        if (!error && result && result.event === "success") { 
+          setImg(result.info.url);
+        }
+      }
+    );
+    myWidget.open();
+  }
+
+
+  
+
+
 
   const sortingName = (col) => {
     if(sort === "ASC"){
@@ -56,19 +72,14 @@ export default function Products() {
 
   const onClick = (e,id) => {
     e.preventDefault();
-    if(photo !== ''){
-      updatePhoto(photo,id);
+    if(img !== ""){
+      updatePhoto(img,id);
     }
     updateProduct(edit,id).then(response => {
       if(response.ok){
         setRefresh(!refresh)
       }
     })  
-  }
-
-  const onPhotoChange = (e) => {
-    setPhoto(e.target.files[0]);
-    setImg(URL.createObjectURL(e.target.files[0]));
   }
 
     return (
@@ -109,7 +120,7 @@ export default function Products() {
                     {role.role === "ROLE_ADMIN" ? <button data-bs-toggle="modal" data-bs-target={"#editProduct"+product.id} className="btn btn-outline-warning mx-2" onClick={(e) => {
                       e.preventDefault();
                       setEdit(product);
-                      setImg(`data:image/jpeg;base64,`+product.photo);
+                      setImg(product.photo);
                     }}
                       >Edit</button> : <i></i>}
   
@@ -127,7 +138,7 @@ export default function Products() {
                           <div className="modal-body">
                             <div className="d-flex justify-content-center container">
                               <div className="card p-3 bg-white"><i className="fa fa-apple"></i>
-                                <div className="about-product text-center"><img src={`data:image/jpeg;base64,` + product.photo} width={200 + 'px'}></img>
+                                <div className="about-product text-center"><img src={product.photo} width={200 + 'px'}></img>
                                   <div>
                                     <h4>{product.name}</h4>
                                     <h6 className="mt-0 text-black-50">{product.description}</h6>
@@ -157,9 +168,9 @@ export default function Products() {
                           <div className="modal-body">
                             <form className="row justify-content-around" key={product.id}>
                             <div className="col-lg-7 form-outline mb-2">
-                                <label className="form-label" htmlFor="form0"></label>     
+                                <label className="form-label" htmlFor="form0"></label>
+                                <button key={product.id} id="upload_widget" class="cloudinary-button" onClick={() => handleOpenWidget()}>Upload files</button>     
                                 <img src={img} id="editImage" width={200 + 'px'}/>                     
-                                <input type="file" name="file" id="form0" className="form-control mt-2" accept="image/*" onChange={(e) => onPhotoChange(e,product.id)}/>
                               </div>
                               <div className="col-lg-7 form-outline mb-2">
                                 <label className="form-label" htmlFor="form1">Name</label>
