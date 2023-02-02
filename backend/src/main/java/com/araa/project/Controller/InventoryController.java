@@ -46,14 +46,14 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
-    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart MultipartFile photo) throws IOException {
+    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart String photo) throws IOException {
 
         Product product = new Product();
         product.setName(productDTO.name());
         product.setPrice(productDTO.price());
         product.setStock(productDTO.stock());
         product.setDescription(productDTO.description());
-        product.setPhoto(photo.getBytes());
+        product.setPhoto(photo);
         productService.save(product);
         return ResponseEntity.ok("Product added");
     }
@@ -77,9 +77,9 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/update/{id}/photo", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart MultipartFile photo) throws IOException {
+    public ResponseEntity<String> productPhotoUpdate(@PathVariable Long id, @RequestPart String photo) throws IOException {
         Product product = productService.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with "+id+" not found"));
-        product.setPhoto(photo.getBytes());
+        product.setPhoto(photo);
         productService.save(product);
 
         return ResponseEntity.ok("Product with id : "+id+" photo updated");

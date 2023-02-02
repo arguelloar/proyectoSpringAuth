@@ -25,7 +25,6 @@ public class Product{
     @NonNull
     private String name;
 
-
     @NonNull
     private int stock;
 
@@ -36,9 +35,7 @@ public class Product{
     private String description;
 
     @NonNull
-    @Lob
-    @Column(length = 100000, unique = true)
-    private byte[] photo;
+    private String photo;
 
 
 }
