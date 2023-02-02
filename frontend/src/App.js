@@ -20,7 +20,7 @@ export {AuthContext, UserContext};
 
 function App() {
 
-  const [role,setRole] = useState("ROLE_ADMIN");
+  const [role,setRole] = useState("ROLE_USER");
   const [auth,setAuth] = useState(isPresent());
 
   return (
@@ -30,10 +30,10 @@ function App() {
         <BrowserRouter>
         <Navbar />
         <Routes>       
-          {/* <Route element={<PrivateRoutes />}> */}
+          <Route element={<PrivateRoutes />}>
             <Route exact path="/products" element={<Products />}/>
             <Route exact path="/" element={<Home />} />
-          {/* </Route> */}
+          </Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
         </Routes>
