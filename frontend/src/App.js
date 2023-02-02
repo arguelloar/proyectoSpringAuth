@@ -13,7 +13,6 @@ import { createContext, useState } from 'react';
 import { isPresent } from './services/cookieAuth';
 import '@popperjs/core';
 
-
 const AuthContext = createContext({});  
 const UserContext = createContext({});
 export {AuthContext, UserContext};
