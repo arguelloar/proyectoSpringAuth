@@ -16,7 +16,7 @@ export default function Products() {
     e.preventDefault();
     let myWidget = window.cloudinary.createUploadWidget({
       cloudName: 'domamliq5', 
-      uploadPreset: 'xvfhpubb'}, (error, result) => { 
+      uploadPreset: 'xsyz6lvv'}, (error, result) => { 
         if (!error && result && result.event === "success") { 
           setImg(result.info.url);
         }
