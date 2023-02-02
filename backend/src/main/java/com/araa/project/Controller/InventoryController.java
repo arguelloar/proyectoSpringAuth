@@ -46,14 +46,14 @@ public class InventoryController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
-    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO, @RequestPart String photo) throws IOException {
+    public @ResponseBody ResponseEntity<String> productAdd(@RequestPart @ModelAttribute ProductDTO productDTO) throws IOException {
 
         Product product = new Product();
         product.setName(productDTO.name());
         product.setPrice(productDTO.price());
         product.setStock(productDTO.stock());
         product.setDescription(productDTO.description());
-        product.setPhoto(photo);
+        product.setPhoto(productDTO.photo());
         productService.save(product);
         return ResponseEntity.ok("Product added");
     }
