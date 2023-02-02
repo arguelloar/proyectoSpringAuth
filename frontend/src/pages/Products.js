@@ -23,12 +23,7 @@ export default function Products() {
     );
     myWidget.open();
   }
-
-
   
-
-
-
   const sortingName = (col) => {
     if(sort === "ASC"){
       const sorted = [...products].sort((a,b) =>
