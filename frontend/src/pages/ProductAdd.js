@@ -13,8 +13,9 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  function handleOpenWidget(){
-    var myWidget = window.cloudinary.createUploadWidget({
+  function handleOpenWidget(e){
+    e.preventDefault();
+    let myWidget = window.cloudinary.createUploadWidget({
       cloudName: 'domamliq5', 
       uploadPreset: 'xvfhpubb'}, (error, result) => { 
         if (!error && result && result.event === "success") { 
@@ -45,7 +46,7 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
         <p>.jpg Images Only</p>
           <label className="form-label" htmlFor="form0"></label>
           <img src={img} id="editImage" width={200 + 'px'} /><br/>
-          <button id="upload_widget" class="cloudinary-button mt-2" onClick={() => handleOpenWidget()}>Upload</button> 
+          <button id="upload_widget" class="cloudinary-button mt-2" onClick={(e) => handleOpenWidget(e)}>Upload</button> 
         </div>
         <div className="col-lg-7 form-outline mb-2">
           <label className="form-label" htmlFor="form1">Name</label>
