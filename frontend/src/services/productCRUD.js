@@ -39,13 +39,13 @@ const getAllProducts = async () => {
     })
   }
 
-  const addProduct = async (product) => {
+  const addProduct = async (product,photo) => {
     let formData = new FormData();
     formData.append("name",product.name);
     formData.append("stock",product.stock);
     formData.append("description",product.description);
     formData.append("price",product.price);
-    formData.append("photo",product.photo);
+    formData.append("photo",photo);
     return await fetch(`https://api.arguelloar.com/api/inventory/add`, {
       credentials: 'include',
       method: 'POST',

@@ -28,7 +28,7 @@ export default function ProductAdd({setOpen,setRefresh,refresh}) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addProduct(product).then(res => {
+    addProduct(product,img).then(res => {
       if(res.ok){
         setRefresh(!refresh);
         setOpen(false);
