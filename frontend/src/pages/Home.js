@@ -9,6 +9,7 @@ export default function Home() {
         <div className="row py-3 justify-content-md-center">
             <div className="col-lg-5 col-sm-12">
                 <h1 className="text-center">Spring and React APP</h1>
+                <a href="https://github.com/arguelloar/proyectoSpringAuth" className="text-center h3">GitHub Repository</a>
                 <br></br>
                 <p>One of my first projects using Spring Boot and React.</p>
                 <p>It contains a products page so you can visualize inventory as a user, and add/update/delete as an admin</p>
